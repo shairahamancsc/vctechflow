@@ -21,7 +21,7 @@ export default function Logo({ className, showText = true }: LogoProps) {
       </div>
       {showText && (
         <span className="text-xl font-bold font-headline tracking-tight">
-          <span className="text-red-700">VC</span> Tech Flow
+          <span className="font-stencil text-red-700">VC</span> Tech Flow
         </span>
       )}
     </Link>
