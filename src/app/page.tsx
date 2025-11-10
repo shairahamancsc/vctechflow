@@ -30,7 +30,7 @@ export default function Home() {
           <div className="absolute inset-0 bg-black/50" />
           <div className="relative z-10 px-4 text-white">
             <h1 className="text-4xl md:text-6xl font-bold font-headline tracking-tight">
-              ServiceFlow
+              VC Tech Flow
             </h1>
             <p className="mt-4 text-lg md:text-2xl max-w-2xl mx-auto">
               Seamless Service Management for Your Devices
@@ -84,7 +84,7 @@ export default function Home() {
         </section>
       </main>
       <footer className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center text-muted-foreground">
-        <p>&copy; {new Date().getFullYear()} ServiceFlow. All rights reserved.</p>
+        <p>&copy; {new Date().getFullYear()} VC Tech Flow. All rights reserved.</p>
       </footer>
     </div>
   );

@@ -3,7 +3,7 @@ import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 
 export const metadata: Metadata = {
-  title: 'ServiceFlow',
+  title: 'VC Tech Flow',
   description: 'Seamless Service Management',
 };
 

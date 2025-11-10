@@ -6,7 +6,7 @@ const technicianAvatar = PlaceHolderImages.find(p => p.id === 'technician-avatar
 
 export const users: User[] = [
   { id: 'user-1', name: 'Rajib', email: 'rajib@example.com', role: 'customer', avatarUrl: customerAvatar },
-  { id: 'user-2', name: 'Chintu', email: 'chintu@serviceflow.com', role: 'technician', avatarUrl: technicianAvatar },
+  { id: 'user-2', name: 'Chintu', email: 'chintu@vctechflow.com', role: 'technician', avatarUrl: technicianAvatar },
 ];
 
 export const parts: Part[] = [

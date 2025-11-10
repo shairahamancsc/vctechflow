@@ -21,7 +21,7 @@ export default function Logo({ className, showText = true }: LogoProps) {
       </div>
       {showText && (
         <span className="text-xl font-bold font-headline tracking-tight">
-          ServiceFlow
+          VC Tech Flow
         </span>
       )}
     </Link>
