@@ -1,15 +1,15 @@
 'use client';
 
-import { getServiceRequestById, getAllParts } from '@/lib/data';
+import { getServiceRequestById } from '@/lib/data';
 import { notFound, useRouter } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import { Printer, User, Wrench, MessageSquare } from 'lucide-react';
+import { Printer, User, MessageSquare } from 'lucide-react';
 import StatusBadge from '@/components/status-badge';
 import StatusTimeline from '@/components/status-timeline';
 import { updateServiceRequest } from '@/app/actions';
-import { serviceRequestStatuses, ServiceRequest, ServiceLog, Part } from '@/lib/types';
-import { useEffect, useState, useActionState, useRef } from 'react';
+import { serviceRequestStatuses, ServiceRequest } from '@/lib/types';
+import { useEffect, useActionState, useRef, use } from 'react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -77,17 +77,9 @@ function UpdateStatusForm({ request }: { request: ServiceRequest }) {
     );
 }
 
-export default function ManageRequestPage({ params }: { params: { id: string } }) {
-  const [request, setRequest] = useState<ServiceRequest | null | undefined>(undefined);
-  
-  useEffect(() => {
-    getServiceRequestById(params.id).then(setRequest);
-  }, [params.id]);
-
-
-  if (request === undefined) {
-    return <div>Loading...</div>;
-  }
+export default function ManageRequestPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = use(params);
+  const request = use(getServiceRequestById(id));
   
   if (!request) {
     notFound();

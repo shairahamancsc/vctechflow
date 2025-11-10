@@ -1,3 +1,5 @@
+'use client';
+
 import { getServiceRequestById } from '@/lib/data';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
@@ -5,9 +7,11 @@ import StatusBadge from '@/components/status-badge';
 import StatusTimeline from '@/components/status-timeline';
 import { notFound } from 'next/navigation';
 import { Printer, User, Wrench } from 'lucide-react';
+import { use } from 'react';
 
-export default async function RequestDetailsPage({ params }: { params: { id: string } }) {
-  const request = await getServiceRequestById(params.id);
+export default function RequestDetailsPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = use(params);
+  const request = use(getServiceRequestById(id));
 
   if (!request) {
     notFound();
