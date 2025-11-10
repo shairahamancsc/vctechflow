@@ -62,7 +62,7 @@ export default function RequestDetailsPage({ params }: { params: Promise<{ id: s
                         <DollarSign className="h-5 w-5 text-muted-foreground" />
                         <div>
                             <p className="text-sm text-muted-foreground">Total Cost</p>
-                            <p className="font-medium">{request.amount ? `$${request.amount.toFixed(2)}` : 'Pending'}</p>
+                            <p className="font-medium">{request.amount ? `₹${request.amount.toFixed(2)}` : 'Pending'}</p>
                         </div>
                     </div>
                 </CardContent>

@@ -55,7 +55,7 @@ function UpdateStatusForm({ request }: { request: ServiceRequest }) {
         <form ref={formRef} action={formAction} className="space-y-4">
             <input type="hidden" name="id" value={request.id} />
             <div className="space-y-2">
-                <Label htmlFor="amount">Amount ($)</Label>
+                <Label htmlFor="amount">Amount (₹)</Label>
                 <Input 
                     id="amount" 
                     name="amount" 
@@ -134,7 +134,7 @@ export default function ManageRequestPage({ params }: { params: Promise<{ id: st
                         <DollarSign className="h-5 w-5 text-muted-foreground" />
                         <div>
                             <p className="text-sm text-muted-foreground">Amount</p>
-                            <p className="font-medium">{request.amount ? `$${request.amount.toFixed(2)}` : 'Not set'}</p>
+                            <p className="font-medium">{request.amount ? `₹${request.amount.toFixed(2)}` : 'Not set'}</p>
                         </div>
                     </div>
                     <Separator />
