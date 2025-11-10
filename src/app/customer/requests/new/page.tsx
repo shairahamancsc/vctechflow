@@ -1,6 +1,6 @@
 'use client';
 
-import { useFormState } from 'react-dom';
+import { useActionState, useEffect, useRef } from 'react';
 import { createServiceRequest } from '@/app/actions';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -8,12 +8,11 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
-import { useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function NewRequestPage() {
   const router = useRouter();
-  const [state, formAction] = useFormState(createServiceRequest, null);
+  const [state, formAction] = useActionState(createServiceRequest, null);
   const { toast } = useToast();
   const formRef = useRef<HTMLFormElement>(null);
 
