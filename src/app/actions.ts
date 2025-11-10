@@ -17,7 +17,7 @@ const UpdateRequestSchema = z.object({
 });
 
 
-export async function createServiceRequest(formData: FormData) {
+export async function createServiceRequest(prevState: any, formData: FormData) {
   const validatedFields = NewRequestSchema.safeParse({
     printerModel: formData.get('printerModel'),
     issueDescription: formData.get('issueDescription'),
@@ -38,7 +38,7 @@ export async function createServiceRequest(formData: FormData) {
   return { message: 'Service request created successfully.' };
 }
 
-export async function updateServiceRequest(formData: FormData) {
+export async function updateServiceRequest(prevState: any, formData: FormData) {
     const validatedFields = UpdateRequestSchema.safeParse({
         id: formData.get('id'),
         status: formData.get('status'),

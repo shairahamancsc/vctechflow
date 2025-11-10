@@ -1,12 +1,15 @@
+'use client';
+
 import { getServiceRequestById, getAllParts } from '@/lib/data';
-import { notFound } from 'next/navigation';
+import { notFound, useRouter } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Printer, User, Wrench, MessageSquare } from 'lucide-react';
 import StatusBadge from '@/components/status-badge';
 import StatusTimeline from '@/components/status-timeline';
 import { updateServiceRequest } from '@/app/actions';
-import { serviceRequestStatuses } from '@/lib/types';
+import { serviceRequestStatuses, ServiceRequest, ServiceLog, Part } from '@/lib/types';
+import { useEffect, useState, useActionState, useRef } from 'react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -18,14 +21,41 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
+import { useToast } from '@/hooks/use-toast';
 
-async function UpdateStatusForm({ requestId, currentStatus }: { requestId: string, currentStatus: string }) {
+function UpdateStatusForm({ request }: { request: ServiceRequest }) {
+    const router = useRouter();
+    const { toast } = useToast();
+    const formRef = useRef<HTMLFormElement>(null);
+    const [state, formAction] = useActionState(updateServiceRequest, null);
+
+    useEffect(() => {
+        if(state?.message) {
+            toast({
+                title: "Success",
+                description: state.message,
+                className: 'bg-accent text-accent-foreground'
+            });
+            formRef.current?.reset();
+            // We don't have access to revalidatePath on the client,
+            // so we refresh the page to see the changes.
+            router.refresh();
+        }
+        if(state?.errors) {
+             toast({
+                variant: "destructive",
+                title: "Error updating request",
+                description: "Please check the form and try again.",
+            });
+        }
+    }, [state, toast, router]);
+
     return (
-        <form action={updateServiceRequest} className="space-y-4">
-            <input type="hidden" name="id" value={requestId} />
+        <form ref={formRef} action={formAction} className="space-y-4">
+            <input type="hidden" name="id" value={request.id} />
             <div className="space-y-2">
                 <Label htmlFor="status">Update Status</Label>
-                <Select name="status" defaultValue={currentStatus}>
+                <Select name="status" defaultValue={request.status}>
                     <SelectTrigger id="status">
                         <SelectValue placeholder="Select status" />
                     </SelectTrigger>
@@ -47,9 +77,18 @@ async function UpdateStatusForm({ requestId, currentStatus }: { requestId: strin
     );
 }
 
-export default async function ManageRequestPage({ params }: { params: { id: string } }) {
-  const request = await getServiceRequestById(params.id);
+export default function ManageRequestPage({ params }: { params: { id: string } }) {
+  const [request, setRequest] = useState<ServiceRequest | null | undefined>(undefined);
+  
+  useEffect(() => {
+    getServiceRequestById(params.id).then(setRequest);
+  }, [params.id]);
 
+
+  if (request === undefined) {
+    return <div>Loading...</div>;
+  }
+  
   if (!request) {
     notFound();
   }
@@ -114,7 +153,7 @@ export default async function ManageRequestPage({ params }: { params: { id: stri
                     <CardDescription>Change the request status and add notes.</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <UpdateStatusForm requestId={request.id} currentStatus={request.status} />
+                    <UpdateStatusForm request={request} />
                 </CardContent>
             </Card>
         </div>
