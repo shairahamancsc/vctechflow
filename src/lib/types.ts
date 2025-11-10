@@ -30,6 +30,7 @@ export type ServiceLog = {
   note: string;
   statusChange?: ServiceRequestStatus;
   partsUsed?: Part[];
+  amount?: number;
 };
 
 export type ServiceRequest = {
@@ -42,4 +43,5 @@ export type ServiceRequest = {
   createdAt: Date;
   updatedAt: Date;
   logs: ServiceLog[];
+  amount?: number;
 };

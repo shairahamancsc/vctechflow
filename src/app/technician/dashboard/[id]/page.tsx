@@ -4,7 +4,7 @@ import { getServiceRequestById } from '@/lib/data';
 import { notFound, useRouter } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import { Printer, User, MessageSquare } from 'lucide-react';
+import { Printer, User, MessageSquare, DollarSign } from 'lucide-react';
 import StatusBadge from '@/components/status-badge';
 import StatusTimeline from '@/components/status-timeline';
 import { updateServiceRequest } from '@/app/actions';
@@ -20,6 +20,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 
@@ -53,6 +54,17 @@ function UpdateStatusForm({ request }: { request: ServiceRequest }) {
     return (
         <form ref={formRef} action={formAction} className="space-y-4">
             <input type="hidden" name="id" value={request.id} />
+            <div className="space-y-2">
+                <Label htmlFor="amount">Amount ($)</Label>
+                <Input 
+                    id="amount" 
+                    name="amount" 
+                    type="number" 
+                    step="0.01" 
+                    placeholder="Enter total cost" 
+                    defaultValue={request.amount}
+                />
+            </div>
             <div className="space-y-2">
                 <Label htmlFor="status">Update Status</Label>
                 <Select name="status" defaultValue={request.status}>
@@ -115,6 +127,14 @@ export default function ManageRequestPage({ params }: { params: Promise<{ id: st
                         <div>
                             <p className="text-sm text-muted-foreground">Customer</p>
                             <p className="font-medium">{request.customer.name}</p>
+                        </div>
+                    </div>
+                    <Separator />
+                    <div className="flex items-center gap-4">
+                        <DollarSign className="h-5 w-5 text-muted-foreground" />
+                        <div>
+                            <p className="text-sm text-muted-foreground">Amount</p>
+                            <p className="font-medium">{request.amount ? `$${request.amount.toFixed(2)}` : 'Not set'}</p>
                         </div>
                     </div>
                     <Separator />

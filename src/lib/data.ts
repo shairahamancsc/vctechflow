@@ -29,7 +29,7 @@ const request1Logs: ServiceLog[] = [
   { timestamp: threeDaysAgo, note: 'Customer reported printer not turning on.', statusChange: 'Pending Pickup' },
   { timestamp: twoDaysAgo, note: 'Picked up printer from customer location.', statusChange: 'In-Shop' },
   { timestamp: yesterday, note: 'Initial diagnostics complete. Power supply unit failure suspected.', statusChange: 'Diagnostics' },
-  { timestamp: now, note: 'Power supply replaced. Printer is now functional. Beginning final tests.', statusChange: 'In Repair', partsUsed: [{ id: 'part-1', name: 'Generic Power Supply Unit', stock: 1 }] }
+  { timestamp: now, note: 'Power supply replaced. Printer is now functional. Beginning final tests.', statusChange: 'In Repair', partsUsed: [{ id: 'part-1', name: 'Generic Power Supply Unit', stock: 1 }], amount: 150.00 }
 ];
 
 const request2Logs: ServiceLog[] = [
@@ -39,7 +39,7 @@ const request2Logs: ServiceLog[] = [
 ];
 
 const request3Logs: ServiceLog[] = [
-    { timestamp: yesterday, note: 'Device delivered and confirmed working by customer.', statusChange: 'Delivered' }
+    { timestamp: yesterday, note: 'Device delivered and confirmed working by customer.', statusChange: 'Delivered', amount: 75.50 }
 ];
 
 export const serviceRequests: ServiceRequest[] = [
@@ -52,7 +52,8 @@ export const serviceRequests: ServiceRequest[] = [
     status: 'In Repair',
     createdAt: threeDaysAgo,
     updatedAt: now,
-    logs: request1Logs
+    logs: request1Logs,
+    amount: 150.00,
   },
   {
     id: 'req-002',
@@ -74,7 +75,8 @@ export const serviceRequests: ServiceRequest[] = [
     status: 'Delivered',
     createdAt: new Date(now.getTime() - 5 * 24 * 60 * 60 * 1000),
     updatedAt: yesterday,
-    logs: request3Logs
+    logs: request3Logs,
+    amount: 75.50,
   },
 ];
 

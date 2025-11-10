@@ -14,6 +14,7 @@ const UpdateRequestSchema = z.object({
     id: z.string(),
     status: z.enum(serviceRequestStatuses),
     technicianNote: z.string().optional(),
+    amount: z.coerce.number().optional(),
 });
 
 
@@ -43,6 +44,7 @@ export async function updateServiceRequest(prevState: any, formData: FormData) {
         id: formData.get('id'),
         status: formData.get('status'),
         technicianNote: formData.get('technicianNote'),
+        amount: formData.get('amount'),
     });
 
     if (!validatedFields.success) {
@@ -51,21 +53,28 @@ export async function updateServiceRequest(prevState: any, formData: FormData) {
         };
     }
     
-    const { id, status, technicianNote } = validatedFields.data;
+    const { id, status, technicianNote, amount } = validatedFields.data;
 
-    console.log('Updating service request:', { id, status, technicianNote });
+    console.log('Updating service request:', { id, status, technicianNote, amount });
     
     // In a real app, you would find and update the request in the database.
     const requestIndex = serviceRequests.findIndex(req => req.id === id);
     if(requestIndex !== -1) {
+        const newLogEntry: any = {
+            timestamp: new Date(),
+            note: technicianNote || `Status updated to ${status}`,
+            statusChange: status,
+        };
+        
+        if(amount) {
+          serviceRequests[requestIndex].amount = amount;
+          newLogEntry.amount = amount;
+        }
+
         serviceRequests[requestIndex].status = status;
         serviceRequests[requestIndex].updatedAt = new Date();
-        if (technicianNote) {
-            serviceRequests[requestIndex].logs.push({
-                timestamp: new Date(),
-                note: technicianNote,
-                statusChange: status,
-            });
+        if (technicianNote || amount) {
+            serviceRequests[requestIndex].logs.push(newLogEntry);
         }
     }
 

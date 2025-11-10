@@ -6,7 +6,7 @@ import { Separator } from '@/components/ui/separator';
 import StatusBadge from '@/components/status-badge';
 import StatusTimeline from '@/components/status-timeline';
 import { notFound } from 'next/navigation';
-import { Printer, User, Wrench } from 'lucide-react';
+import { Printer, User, Wrench, DollarSign } from 'lucide-react';
 import { use } from 'react';
 
 export default function RequestDetailsPage({ params }: { params: Promise<{ id: string }> }) {
@@ -55,6 +55,14 @@ export default function RequestDetailsPage({ params }: { params: Promise<{ id: s
                         <div>
                             <p className="text-sm text-muted-foreground">Technician</p>
                             <p className="font-medium">{request.technician?.name || 'Not assigned'}</p>
+                        </div>
+                    </div>
+                     <Separator />
+                     <div className="flex items-center gap-4">
+                        <DollarSign className="h-5 w-5 text-muted-foreground" />
+                        <div>
+                            <p className="text-sm text-muted-foreground">Total Cost</p>
+                            <p className="font-medium">{request.amount ? `$${request.amount.toFixed(2)}` : 'Pending'}</p>
                         </div>
                     </div>
                 </CardContent>
