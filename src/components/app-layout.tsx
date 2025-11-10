@@ -3,7 +3,6 @@
 import * as React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import Image from 'next/image';
 
 import {
   SidebarProvider,
@@ -14,28 +13,45 @@ import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
-  SidebarInset,
   SidebarTrigger,
-  useSidebar,
 } from '@/components/ui/sidebar';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { Sheet, SheetContent } from '@/components/ui/sheet';
 import Logo from '@/components/logo';
 import type { User } from '@/lib/types';
-import { LogOut } from 'lucide-react';
+import { LogOut, ClipboardList, PlusCircle, PackageSearch } from 'lucide-react';
+
+const iconMap = {
+  ClipboardList,
+  PlusCircle,
+  PackageSearch,
+};
 
 type NavItem = {
   href: string;
   label: string;
-  icon: React.ElementType;
+  icon: keyof typeof iconMap;
   tooltip: string;
 };
 
+const customerNavItems: NavItem[] = [
+  { href: '/customer/dashboard', label: 'My Dashboard', icon: 'ClipboardList', tooltip: 'Dashboard' },
+  { href: '/customer/requests/new', label: 'New Request', icon: 'PlusCircle', tooltip: 'New Request' },
+];
+
+const technicianNavItems: NavItem[] = [
+  { href: '/technician/dashboard', label: 'Task Dashboard', icon: 'ClipboardList', tooltip: 'Dashboard' },
+  { href: '/technician/inventory', label: 'Parts Inventory', icon: 'PackageSearch', tooltip: 'Inventory' },
+];
+
+const navItemsMap = {
+  customer: customerNavItems,
+  technician: technicianNavItems,
+}
+
 type AppLayoutProps = {
   user: User;
-  navItems: NavItem[];
+  userRole: 'customer' | 'technician';
   children: React.ReactNode;
 };
 
@@ -51,20 +67,23 @@ function AppSidebar({ user, navItems }: { user: User; navItems: NavItem[] }) {
       <Separator />
       <SidebarContent>
         <SidebarMenu>
-          {navItems.map((item) => (
-            <SidebarMenuItem key={item.href}>
-              <SidebarMenuButton
-                asChild
-                isActive={pathname.startsWith(item.href)}
-                tooltip={{ children: item.tooltip, side: 'right' }}
-              >
-                <Link href={item.href}>
-                  <item.icon />
-                  <span>{item.label}</span>
-                </Link>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          ))}
+          {navItems.map((item) => {
+            const Icon = iconMap[item.icon];
+            return (
+              <SidebarMenuItem key={item.href}>
+                <SidebarMenuButton
+                  asChild
+                  isActive={pathname.startsWith(item.href)}
+                  tooltip={{ children: item.tooltip, side: 'right' }}
+                >
+                  <Link href={item.href}>
+                    <Icon />
+                    <span>{item.label}</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            );
+          })}
         </SidebarMenu>
       </SidebarContent>
       <Separator />
@@ -91,8 +110,9 @@ function AppSidebar({ user, navItems }: { user: User; navItems: NavItem[] }) {
 }
 
 
-export default function AppLayout({ user, navItems, children }: AppLayoutProps) {
+export default function AppLayout({ user, userRole, children }: AppLayoutProps) {
   const [open, setOpen] = React.useState(true);
+  const navItems = navItemsMap[userRole];
 
   return (
     <SidebarProvider open={open} onOpenChange={setOpen}>
