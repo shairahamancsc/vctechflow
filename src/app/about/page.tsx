@@ -21,7 +21,7 @@ export default function AboutPage() {
       <Header />
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold font-headline mb-4 whitespace-nowrap">About {companyDetails.name}</h1>
+          <h1 className="text-4xl md:text-5xl font-bold font-headline mb-4 whitespace-nowrap">About <span style={{ color: '#8B0000' }}>V</span>ision <span style={{ color: '#8B0000' }}>C</span>omputer</h1>
           <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
             Your trusted partner in seamless device service management.
           </p>
