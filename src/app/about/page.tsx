@@ -90,17 +90,15 @@ export default function AboutPage() {
 
             <div className="flex justify-center items-center gap-8 flex-wrap">
                 <Card className="p-6 bg-muted/20 w-52 h-32 flex justify-center items-center hover:shadow-lg transition-shadow">
-                    <CardContent className="p-0">
+                    <CardContent className="p-0 relative w-32 h-20">
                         {dellLogo && (
-                            <div className="relative w-32 h-20">
-                                <Image
-                                    src={dellLogo.imageUrl}
-                                    alt={dellLogo.description}
-                                    fill
-                                    className="object-contain"
-                                    data-ai-hint={dellLogo.imageHint}
-                                />
-                            </div>
+                            <Image
+                                src={dellLogo.imageUrl}
+                                alt={dellLogo.description}
+                                fill
+                                className="object-contain"
+                                data-ai-hint={dellLogo.imageHint}
+                            />
                         )}
                     </CardContent>
                 </Card>
