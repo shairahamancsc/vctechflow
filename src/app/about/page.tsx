@@ -2,35 +2,68 @@
 import Image from 'next/image';
 import Header from '@/components/header';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Mail, MapPin, Phone, User } from 'lucide-react';
 
 export default function AboutPage() {
   const aboutImage = PlaceHolderImages.find((img) => img.id === 'hero');
+
+  const companyDetails = {
+    name: 'Vision Computer',
+    address: 'Utkala Ashram Road, Berhampur, Dist. Ganjam, Odisha, Pin-760007',
+    mobile: '9337232844',
+    email: 'visioncomputer06@gmail.com',
+    proprietor: 'Mr. Saddam Husain',
+  };
 
   return (
     <>
       <Header />
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold font-headline mb-4">About VC Tech Flow</h1>
+          <h1 className="text-4xl md:text-5xl font-bold font-headline mb-4">About {companyDetails.name}</h1>
           <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
             Your trusted partner in seamless device service management.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          <div className="space-y-6">
-            <h2 className="text-3xl font-headline font-semibold">Our Mission</h2>
-            <p className="text-muted-foreground leading-relaxed">
-              At VC Tech Flow, our mission is to revolutionize the device repair industry by providing a transparent, efficient, and user-friendly platform for both customers and technicians. We believe in empowering our users with the tools they need to manage service requests with ease and confidence.
-            </p>
-            <p className="text-muted-foreground leading-relaxed">
-              From the initial service request to the final delivery, our system is designed to provide real-time updates, clear communication, and a hassle-free experience. We are committed to excellence and strive to build lasting relationships with our clients based on trust and quality service.
-            </p>
-             <h2 className="text-3xl font-headline font-semibold mt-8">Our Vision</h2>
-             <p className="text-muted-foreground leading-relaxed">
-              We envision a future where device servicing is no longer a chore but a simple, streamlined process. By leveraging technology, we aim to connect skilled technicians with customers in need, ensuring quick, reliable, and high-quality repairs for everyone.
-            </p>
-          </div>
+        <div className="grid md:grid-cols-2 gap-12 items-start">
+           <Card className="shadow-lg">
+            <CardHeader>
+              <CardTitle className="font-headline text-3xl">Contact Information</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6 text-muted-foreground">
+              <div className="flex items-start gap-4">
+                <MapPin className="h-6 w-6 text-primary mt-1" />
+                <div>
+                  <h3 className="font-semibold text-foreground">Address</h3>
+                  <p>{companyDetails.address}</p>
+                </div>
+              </div>
+               <div className="flex items-start gap-4">
+                <Phone className="h-6 w-6 text-primary mt-1" />
+                <div>
+                  <h3 className="font-semibold text-foreground">Mobile</h3>
+                  <p>{companyDetails.mobile}</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-4">
+                <Mail className="h-6 w-6 text-primary mt-1" />
+                <div>
+                  <h3 className="font-semibold text-foreground">Email</h3>
+                  <p>{companyDetails.email}</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-4">
+                <User className="h-6 w-6 text-primary mt-1" />
+                <div>
+                  <h3 className="font-semibold text-foreground">Proprietor</h3>
+                  <p>{companyDetails.proprietor}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          
           <div>
             {aboutImage && (
               <div className="rounded-lg overflow-hidden shadow-2xl">
