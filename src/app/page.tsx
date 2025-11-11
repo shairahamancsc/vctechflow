@@ -28,7 +28,7 @@ export default function Home() {
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-secondary/20">
+    <div className="flex flex-col min-h-screen bg-background">
       <header className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <Logo />
       </header>
@@ -44,12 +44,12 @@ export default function Home() {
               priority
             />
           )}
-          <div className="absolute inset-0 bg-black/60" />
-          <div className="relative z-10 px-4 text-white">
+          <div className="absolute inset-0 bg-black/70" />
+          <div className="relative z-10 px-4 text-primary-foreground">
             <h1 className="text-4xl md:text-6xl font-bold font-headline tracking-tight">
               VC Tech Flow
             </h1>
-            <p className="mt-4 text-lg md:text-2xl max-w-2xl mx-auto">
+            <p className="mt-4 text-lg md:text-2xl max-w-2xl mx-auto text-muted-foreground">
               Seamless Service Management for Your Devices
             </p>
           </div>
