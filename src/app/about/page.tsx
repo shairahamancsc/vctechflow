@@ -3,10 +3,12 @@ import Image from 'next/image';
 import Header from '@/components/header';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Mail, MapPin, Phone, User } from 'lucide-react';
+import { Mail, MapPin, Phone, User, Settings } from 'lucide-react';
+import { Separator } from '@/components/ui/separator';
 
 export default function AboutPage() {
   const aboutImage = PlaceHolderImages.find((img) => img.id === 'hero');
+  const dellLogo = PlaceHolderImages.find((img) => img.id === 'dell-logo');
 
   const companyDetails = {
     name: 'Vision Computer',
@@ -27,7 +29,7 @@ export default function AboutPage() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-12 items-start">
+        <div className="grid md:grid-cols-2 gap-12 items-start mb-16">
            <Card className="shadow-lg">
             <CardHeader>
               <CardTitle className="font-headline text-3xl">Contact Information</CardTitle>
@@ -78,6 +80,32 @@ export default function AboutPage() {
               </div>
             )}
           </div>
+        </div>
+
+        <Separator className="my-12" />
+
+        <div className="text-center">
+            <h2 className="text-3xl font-bold font-headline mb-2">We Service & Deal With These Brands</h2>
+            <p className="text-muted-foreground mb-8">and many more...</p>
+
+            <div className="flex justify-center items-center gap-8 flex-wrap">
+                <Card className="p-6 bg-muted/20 w-52 h-32 flex justify-center items-center hover:shadow-lg transition-shadow">
+                    <CardContent className="p-0">
+                        {dellLogo && (
+                            <div className="relative w-32 h-20">
+                                <Image
+                                    src={dellLogo.imageUrl}
+                                    alt={dellLogo.description}
+                                    fill
+                                    className="object-contain"
+                                    data-ai-hint={dellLogo.imageHint}
+                                />
+                            </div>
+                        )}
+                    </CardContent>
+                </Card>
+                 {/* You can add more brand cards here */}
+            </div>
         </div>
       </main>
        <footer className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center text-muted-foreground mt-12">

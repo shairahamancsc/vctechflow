@@ -17,6 +17,12 @@
       "description": "Avatar for a technician.",
       "imageUrl": "https://images.unsplash.com/photo-1535643302794-19c3804b874b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8cGVyc29uJTIwcG9ydHJhaXR8ZW58MHx8fHwxNzYyNzE0NzIyfDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "person portrait"
+    },
+    {
+      "id": "dell-logo",
+      "description": "Dell logo",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/2/25/Dell_logo.svg",
+      "imageHint": "dell logo"
     }
   ]
 }
