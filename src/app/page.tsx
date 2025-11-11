@@ -32,7 +32,7 @@ export default function Home() {
     <div className="flex flex-col min-h-screen bg-background">
       <Header />
       <main className="flex-grow">
-        <section className="relative w-full h-[50vh] md:h-[60vh] flex items-center justify-center text-center">
+        <section className="relative w-full h-[50vh] md:h-[60vh] hidden md:flex items-center justify-center text-center">
           {heroImage && (
             <Image
               src={heroImage.imageUrl}
