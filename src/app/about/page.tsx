@@ -23,7 +23,7 @@ export default function AboutPage() {
       <Header />
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold font-headline mb-4 whitespace-nowrap">About <span style={{ color: '#8B0000' }}>V</span>ision <span style={{ color: '#8B0000' }}>C</span>omputer</h1>
+          <h1 className="text-3xl md:text-5xl font-bold font-headline mb-4 whitespace-nowrap">About <span style={{ color: '#8B0000' }}>V</span>ision <span style={{ color: '#8B0000' }}>C</span>omputer</h1>
           <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
             Your trusted partner in seamless device service management.
           </p>
@@ -32,7 +32,7 @@ export default function AboutPage() {
         <div className="grid md:grid-cols-2 gap-12 items-start mb-16">
            <Card className="shadow-lg">
             <CardHeader>
-              <CardTitle className="font-headline text-3xl">Contact Information</CardTitle>
+              <CardTitle className="font-headline text-2xl md:text-3xl">Contact Information</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6 text-muted-foreground">
               <div className="flex items-start gap-4">
@@ -85,7 +85,7 @@ export default function AboutPage() {
         <Separator className="my-12" />
 
         <div className="text-center">
-            <h2 className="text-3xl font-bold font-headline mb-2">We Service & Deal With These Brands</h2>
+            <h2 className="text-2xl md:text-3xl font-bold font-headline mb-2">We Service & Deal With These Brands</h2>
             <p className="text-muted-foreground mb-8">and many more...</p>
 
             <div className="flex justify-center items-center gap-8 flex-wrap">
