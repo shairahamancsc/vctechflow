@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -8,8 +9,8 @@ import { ArrowRight, User, Wrench } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import Logo from '@/components/logo';
 import SplashScreen from '@/components/splash-screen';
+import Header from '@/components/header';
 
 export default function Home() {
   const [showSplash, setShowSplash] = useState(true);
@@ -29,9 +30,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
-      <header className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
-        <Logo />
-      </header>
+      <Header />
       <main className="flex-grow">
         <section className="relative w-full h-[50vh] md:h-[60vh] hidden md:flex items-center justify-center text-center">
           {heroImage && (

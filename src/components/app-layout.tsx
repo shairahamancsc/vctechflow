@@ -1,3 +1,4 @@
+
 'use client';
 
 import * as React from 'react';
@@ -20,8 +21,15 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
 import Logo from '@/components/logo';
 import type { User } from '@/lib/types';
-import { LogOut, ClipboardList, PlusCircle, PackageSearch } from 'lucide-react';
+import { LogOut, ClipboardList, PlusCircle, PackageSearch, MoreVertical } from 'lucide-react';
 import NavigationButtons from './navigation-buttons';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Button } from './ui/button';
 
 const iconMap = {
   ClipboardList,
@@ -123,9 +131,33 @@ export default function AppLayout({ user, userRole, children }: AppLayoutProps) 
           <AppSidebar user={user} navItems={navItems} />
         </Sidebar>
         <div className="flex-1">
-          <header className="sticky top-0 z-10 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6 sm:py-4">
-            <SidebarTrigger className="md:hidden" />
-            <NavigationButtons />
+          <header className="sticky top-0 z-10 flex h-14 items-center justify-between border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6 sm:py-4">
+            <div className="flex items-center gap-4">
+              <SidebarTrigger className="md:hidden" />
+              <NavigationButtons />
+            </div>
+            <nav className="flex items-center gap-4">
+              <div className="hidden md:flex gap-2">
+                 <Button variant="ghost" asChild>
+                    <Link href="/about">About</Link>
+                  </Button>
+              </div>
+              <div className="md:hidden">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="icon">
+                      <MoreVertical />
+                      <span className="sr-only">More</span>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem asChild>
+                      <Link href="/about">About</Link>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+            </nav>
           </header>
           <main className="p-4 sm:px-6 sm:py-0">{children}</main>
         </div>
