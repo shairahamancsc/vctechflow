@@ -8,6 +8,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
@@ -18,12 +19,15 @@ export default function Header() {
       <Logo />
       <nav className="flex items-center gap-4">
         {/* Desktop Navigation */}
-        <div className="hidden md:flex gap-4">
+        <div className="hidden md:flex gap-2">
           <Button variant="ghost" asChild>
             <Link href="/">Home</Link>
           </Button>
           <Button variant="ghost" asChild>
             <Link href="/about">About</Link>
+          </Button>
+           <Button variant="ghost" asChild>
+            <Link href="/admin/login">Admin Login</Link>
           </Button>
         </div>
 
@@ -42,6 +46,10 @@ export default function Header() {
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link href="/about">About</Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem asChild>
+                <Link href="/admin/login">Admin Login</Link>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

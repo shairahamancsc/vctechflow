@@ -32,7 +32,7 @@ export default function Home() {
     <div className="flex flex-col min-h-screen bg-background">
       <Header />
       <main className="flex-grow">
-        <section className="relative w-full h-[50vh] md:h-[60vh] hidden md:flex items-center justify-center text-center">
+        <section className="relative w-full h-[50vh] md:h-[60vh] flex items-center justify-center text-center">
           {heroImage && (
             <Image
               src={heroImage.imageUrl}
@@ -58,7 +58,7 @@ export default function Home() {
           <h2 className="text-3xl font-bold text-center mb-12 font-headline">
             Choose Your Portal
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             <Card className="hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-card/80 backdrop-blur-sm border-border/20 overflow-hidden">
              <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-primary/10 opacity-50"></div>
               <CardHeader className="flex flex-row items-center gap-4 space-y-0 relative z-10">
@@ -94,26 +94,6 @@ export default function Home() {
                 <Button asChild className="w-full font-semibold">
                   <Link href="/technician/dashboard">
                     Access Technician Portal <ArrowRight className="ml-2" />
-                  </Link>
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card className="hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-card/80 backdrop-blur-sm border-border/20 overflow-hidden md:col-span-2 lg:col-span-1">
-              <div className="absolute inset-0 bg-gradient-to-br from-destructive/10 via-transparent to-destructive/10 opacity-50"></div>
-              <CardHeader className="flex flex-row items-center gap-4 space-y-0 relative z-10">
-                <div className="p-3 rounded-lg bg-primary/20 text-primary">
-                  <ShieldCheck className="h-8 w-8" />
-                </div>
-                <CardTitle className="font-headline text-2xl">Admin Portal</CardTitle>
-              </CardHeader>
-              <CardContent className="relative z-10">
-                <p className="text-muted-foreground mb-6">
-                  Access administrative controls, manage users, and view system-wide analytics.
-                </p>
-                <Button asChild className="w-full font-semibold">
-                  <Link href="/admin/login">
-                    Access Admin Portal <ArrowRight className="ml-2" />
                   </Link>
                 </Button>
               </CardContent>
