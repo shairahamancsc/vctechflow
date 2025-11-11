@@ -1,3 +1,6 @@
+'use client';
+
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight, User, Wrench } from 'lucide-react';
@@ -6,9 +9,23 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import Logo from '@/components/logo';
+import SplashScreen from '@/components/splash-screen';
 
 export default function Home() {
+  const [showSplash, setShowSplash] = useState(true);
   const heroImage = PlaceHolderImages.find((img) => img.id === 'hero');
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowSplash(false);
+    }, 2500); // Show splash for 2.5 seconds
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (showSplash) {
+    return <SplashScreen />;
+  }
 
   return (
     <div className="flex flex-col min-h-screen">
