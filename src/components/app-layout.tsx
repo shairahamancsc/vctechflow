@@ -21,7 +21,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
 import Logo from '@/components/logo';
 import type { User } from '@/lib/types';
-import { LogOut, ClipboardList, PlusCircle, PackageSearch, MoreVertical } from 'lucide-react';
+import { LogOut, ClipboardList, PlusCircle, PackageSearch, MoreVertical, ShieldCheck } from 'lucide-react';
 import NavigationButtons from './navigation-buttons';
 import {
   DropdownMenu,
@@ -35,6 +35,7 @@ const iconMap = {
   ClipboardList,
   PlusCircle,
   PackageSearch,
+  ShieldCheck,
 };
 
 type NavItem = {
@@ -54,14 +55,20 @@ const technicianNavItems: NavItem[] = [
   { href: '/technician/inventory', label: 'Parts Inventory', icon: 'PackageSearch', tooltip: 'Inventory' },
 ];
 
+const adminNavItems: NavItem[] = [
+  { href: '/admin/dashboard', label: 'Dashboard', icon: 'ShieldCheck', tooltip: 'Admin Dashboard' },
+];
+
+
 const navItemsMap = {
   customer: customerNavItems,
   technician: technicianNavItems,
+  admin: adminNavItems,
 }
 
 type AppLayoutProps = {
   user: User;
-  userRole: 'customer' | 'technician';
+  userRole: 'customer' | 'technician' | 'admin';
   children: React.ReactNode;
 };
 

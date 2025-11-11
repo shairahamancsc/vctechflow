@@ -3,10 +3,12 @@ import { PlaceHolderImages } from './placeholder-images';
 
 const customerAvatar = PlaceHolderImages.find(p => p.id === 'customer-avatar')?.imageUrl || '';
 const technicianAvatar = PlaceHolderImages.find(p => p.id === 'technician-avatar')?.imageUrl || '';
+const adminAvatar = PlaceHolderImages.find(p => p.id === 'admin-avatar')?.imageUrl || '';
 
 export const users: User[] = [
   { id: 'user-1', name: 'Rajib', email: 'rajib@example.com', role: 'customer', avatarUrl: customerAvatar },
   { id: 'user-2', name: 'Chintu', email: 'chintu@vctechflow.com', role: 'technician', avatarUrl: technicianAvatar },
+  { id: 'user-3', name: 'Saddam Husain', email: 'admin@vctechflow.com', role: 'admin', avatarUrl: adminAvatar },
 ];
 
 export const parts: Part[] = [
