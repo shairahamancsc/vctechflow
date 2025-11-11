@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { Wrench } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -20,9 +21,12 @@ export default function Logo({ className, showText = true }: LogoProps) {
         <Wrench className="h-5 w-5" />
       </div>
       {showText && (
-        <span className="text-xl font-bold font-headline tracking-tight">
-          <span className="font-stencil text-red-700">VC</span> Tech Flow
-        </span>
+        <div className="flex items-center gap-1">
+          <Image src="/vc-logo.png" alt="VC" width={40} height={28} />
+          <span className="text-xl font-bold font-headline tracking-tight">
+            Tech Flow
+          </span>
+        </div>
       )}
     </Link>
   );
