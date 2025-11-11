@@ -28,10 +28,10 @@ export default async function CustomerDashboard() {
       {requests.length > 0 ? (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {requests.map((request) => (
-            <Card key={request.id} className="flex flex-col">
+            <Card key={request.id} className="flex flex-col hover:shadow-lg transition-shadow duration-300">
               <CardHeader>
                 <div className="flex justify-between items-start">
-                  <CardTitle className="text-lg font-semibold">{request.printerModel}</CardTitle>
+                  <CardTitle className="text-lg font-semibold font-headline">{request.printerModel}</CardTitle>
                   <StatusBadge status={request.status} />
                 </div>
                 <CardDescription>Request ID: {request.id}</CardDescription>

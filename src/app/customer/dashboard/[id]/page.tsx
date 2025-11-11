@@ -24,10 +24,10 @@ export default function RequestDetailsPage({ params }: { params: Promise<{ id: s
           <h1 className="text-3xl font-bold font-headline">Request Details</h1>
           <p className="text-muted-foreground">Detailed view of service request {request.id}</p>
         </div>
-        <StatusBadge status={request.status} className="text-base" />
+        <StatusBadge status={request.status} className="text-base px-4 py-1" />
       </div>
 
-      <div className="grid gap-6 md:grid-cols-3">
+      <div className="grid gap-8 md:grid-cols-3">
         <div className="md:col-span-2 space-y-6">
             <Card>
                 <CardHeader>
@@ -35,34 +35,34 @@ export default function RequestDetailsPage({ params }: { params: Promise<{ id: s
                 </CardHeader>
                 <CardContent className="space-y-4">
                      <div className="flex items-center gap-4">
-                        <Printer className="h-5 w-5 text-muted-foreground" />
+                        <Printer className="h-6 w-6 text-primary" />
                         <div>
                             <p className="text-sm text-muted-foreground">Printer Model</p>
-                            <p className="font-medium">{request.printerModel}</p>
+                            <p className="font-medium text-lg">{request.printerModel}</p>
                         </div>
                     </div>
                     <Separator />
                      <div className="flex items-center gap-4">
-                        <User className="h-5 w-5 text-muted-foreground" />
+                        <User className="h-6 w-6 text-primary" />
                         <div>
                             <p className="text-sm text-muted-foreground">Customer</p>
-                            <p className="font-medium">{request.customer.name}</p>
+                            <p className="font-medium text-lg">{request.customer.name}</p>
                         </div>
                     </div>
                     <Separator />
                      <div className="flex items-center gap-4">
-                        <Wrench className="h-5 w-5 text-muted-foreground" />
+                        <Wrench className="h-6 w-6 text-primary" />
                         <div>
                             <p className="text-sm text-muted-foreground">Technician</p>
-                            <p className="font-medium">{request.technician?.name || 'Not assigned'}</p>
+                            <p className="font-medium text-lg">{request.technician?.name || 'Not assigned'}</p>
                         </div>
                     </div>
                      <Separator />
                      <div className="flex items-center gap-4">
-                        <DollarSign className="h-5 w-5 text-muted-foreground" />
+                        <DollarSign className="h-6 w-6 text-primary" />
                         <div>
                             <p className="text-sm text-muted-foreground">Total Cost</p>
-                            <p className="font-medium">{request.amount ? `₹${request.amount.toFixed(2)}` : 'Pending'}</p>
+                            <p className="font-bold text-xl">{request.amount ? `₹${request.amount.toFixed(2)}` : 'Pending'}</p>
                         </div>
                     </div>
                 </CardContent>
@@ -73,7 +73,7 @@ export default function RequestDetailsPage({ params }: { params: Promise<{ id: s
                     <CardTitle>Issue Description</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <p className="text-muted-foreground">{request.issueDescription}</p>
+                    <p className="text-muted-foreground leading-relaxed">{request.issueDescription}</p>
                 </CardContent>
             </Card>
         </div>
