@@ -1,9 +1,7 @@
 
 import type { User, Part, ServiceRequest, ServiceLog, WithId } from './types';
-import { getFirestore, collection, query, where, doc, getDoc, Firestore } from 'firebase/firestore';
-import { initializeFirebase } from '@/firebase';
-
-const { firestore: db } = initializeFirebase();
+import { collection, query, where, doc, getDoc, Firestore } from 'firebase/firestore';
+import { db } from '@/firebase/server-init';
 
 
 export const getServiceRequestsByCustomerId = (customerId: string) => {
