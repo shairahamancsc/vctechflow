@@ -1,10 +1,10 @@
 
 export const firebaseConfig = {
-  "projectId": "serviceflow-22527",
-  "appId": "1:573613630377:web:806587395521ac07601ab8",
-  "apiKey": "AIzaSyCfbxvBRGK4frS9Iwh2nFgVnRuVpsV6jJo",
-  "authDomain": "serviceflow-22527.firebaseapp.com",
-  "measurementId": "G-5G3W4T7L5S",
-  "storageBucket": "serviceflow-22527.appspot.com",
-  "messagingSenderId": "573613630377"
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
 };
