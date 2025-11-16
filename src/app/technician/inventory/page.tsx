@@ -1,9 +1,13 @@
+
+'use client';
 import { getAllParts } from '@/lib/data';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { useStream } from '@/hooks/use-stream';
+import { Part } from '@/lib/types';
 
-export default async function InventoryPage() {
-  const parts = await getAllParts();
+export default function InventoryPage() {
+  const { data: parts, loading } = useStream<Part>(getAllParts());
 
   return (
     <div className="space-y-8">
@@ -27,7 +31,12 @@ export default async function InventoryPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {parts.map((part) => (
+              {loading && (
+                <TableRow>
+                  <TableCell colSpan={3} className="text-center">Loading parts...</TableCell>
+                </TableRow>
+              )}
+              {parts && parts.map((part) => (
                 <TableRow key={part.id}>
                   <TableCell className="font-medium">{part.id}</TableCell>
                   <TableCell>{part.name}</TableCell>

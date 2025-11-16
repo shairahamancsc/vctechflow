@@ -17,22 +17,15 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { deleteUser } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
-import { use, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import AddUserDialog from './add-user-dialog';
+import { User, WithId } from '@/lib/types';
+import { useStream } from '@/hooks/use-stream';
 
 export default function UserManagementPage() {
   const { toast } = useToast();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [users, setUsers] = useState(use(getAllUsers()));
-
-  useEffect(() => {
-    // This is a workaround to re-fetch users when the dialog closes
-    // In a real app with a database, you would likely use a state management library
-    // or a different re-fetching strategy.
-    if(!isDialogOpen) {
-      getAllUsers().then(setUsers);
-    }
-  }, [isDialogOpen]);
+  const { data: users, loading } = useStream<User>(getAllUsers());
 
   const handleDelete = async (userId: string) => {
     if (confirm('Are you sure you want to delete this user? This action cannot be undone.')) {
@@ -72,7 +65,12 @@ export default function UserManagementPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {users.map((user) => (
+              {loading && (
+                <TableRow>
+                  <TableCell colSpan={3} className="text-center">Loading users...</TableCell>
+                </TableRow>
+              )}
+              {users && users.map((user) => (
                 <TableRow key={user.id}>
                   <TableCell>
                     <div className="flex items-center gap-3">

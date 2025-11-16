@@ -4,7 +4,7 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight, User, Wrench, ShieldCheck } from 'lucide-react';
+import { ArrowRight, User, Wrench } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -19,7 +19,7 @@ export default function Home() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowSplash(false);
-    }, 2500); // Show splash for 2.5 seconds
+    }, 2500);
 
     return () => clearTimeout(timer);
   }, []);
@@ -43,12 +43,12 @@ export default function Home() {
               priority
             />
           )}
-          <div className="absolute inset-0 bg-black/70" />
-          <div className="relative z-10 px-4 text-primary-foreground">
+          <div className="absolute inset-0 bg-black/60" />
+          <div className="relative z-10 px-4 text-white">
             <h1 className="text-4xl md:text-6xl font-bold font-headline tracking-tight">
               VC Tech Flow
             </h1>
-            <p className="mt-4 text-lg md:text-2xl max-w-2xl mx-auto text-muted-foreground">
+            <p className="mt-4 text-lg md:text-2xl max-w-2xl mx-auto text-neutral-300">
               Seamless Service Management for Your Devices
             </p>
           </div>
@@ -59,10 +59,10 @@ export default function Home() {
             Choose Your Portal
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            <Card className="hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-card/80 backdrop-blur-sm border-border/20 overflow-hidden">
+            <Card className="hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden">
              <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-primary/10 opacity-50"></div>
               <CardHeader className="flex flex-row items-center gap-4 space-y-0 relative z-10">
-                <div className="p-3 rounded-lg bg-primary/20 text-primary">
+                <div className="p-3 rounded-lg bg-primary/10 text-primary">
                   <User className="h-8 w-8" />
                 </div>
                 <CardTitle className="font-headline text-2xl">Customer Portal</CardTitle>
@@ -79,10 +79,10 @@ export default function Home() {
               </CardContent>
             </Card>
 
-            <Card className="hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-card/80 backdrop-blur-sm border-border/20 overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-secondary/20 via-transparent to-secondary/20 opacity-50"></div>
+            <Card className="hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-secondary/10 via-transparent to-secondary/10 opacity-50"></div>
               <CardHeader className="flex flex-row items-center gap-4 space-y-0 relative z-10">
-                <div className="p-3 rounded-lg bg-primary/20 text-primary">
+                <div className="p-3 rounded-lg bg-primary/10 text-primary">
                   <Wrench className="h-8 w-8" />
                 </div>
                 <CardTitle className="font-headline text-2xl">Technician Portal</CardTitle>
@@ -102,7 +102,7 @@ export default function Home() {
           </div>
         </section>
       </main>
-      <footer className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center text-muted-foreground">
+      <footer className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center text-muted-foreground border-t">
         <p>&copy; {new Date().getFullYear()} VC Tech Flow. All rights reserved.</p>
       </footer>
     </div>

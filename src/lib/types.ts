@@ -1,5 +1,6 @@
+export type WithId<T> = T & { id: string };
+
 export type User = {
-  id: string;
   name: string;
   email: string;
   role: 'customer' | 'technician' | 'admin';
@@ -7,7 +8,6 @@ export type User = {
 };
 
 export type Part = {
-  id: string;
   name: string;
   stock: number;
 };
@@ -26,22 +26,21 @@ export const serviceRequestStatuses = [
 export type ServiceRequestStatus = (typeof serviceRequestStatuses)[number];
 
 export type ServiceLog = {
-  timestamp: Date;
+  timestamp: string; // ISO 8601 string
   note: string;
   statusChange?: ServiceRequestStatus;
-  partsUsed?: Part[];
+  partsUsed?: WithId<Part>[];
   amount?: number;
 };
 
 export type ServiceRequest = {
-  id: string;
-  customer: User;
-  technician?: User;
+  customer: WithId<User>;
+  technician?: WithId<User>;
   printerModel: string;
   issueDescription: string;
   status: ServiceRequestStatus;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string; // ISO 8601 string
+  updatedAt: string; // ISO 8601 string
   logs: ServiceLog[];
   amount?: number;
 };

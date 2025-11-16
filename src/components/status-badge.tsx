@@ -8,14 +8,14 @@ type StatusBadgeProps = {
 
 export default function StatusBadge({ status, className, ...props }: StatusBadgeProps) {
   const statusStyles: Record<ServiceRequestStatus, string> = {
-    'Delivered': 'bg-green-100 text-green-800 border-green-200 dark:bg-green-900/40 dark:text-green-300 dark:border-green-800/60',
-    'In Repair': 'bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/40 dark:text-blue-300 dark:border-blue-800/60',
-    'In-Shop': 'bg-cyan-100 text-cyan-800 border-cyan-200 dark:bg-cyan-900/40 dark:text-cyan-300 dark:border-cyan-800/60',
-    'Diagnostics': 'bg-indigo-100 text-indigo-800 border-indigo-200 dark:bg-indigo-900/40 dark:text-indigo-300 dark:border-indigo-800/60',
-    'Ready for Delivery': 'bg-purple-100 text-purple-800 border-purple-200 dark:bg-purple-900/40 dark:text-purple-300 dark:border-purple-800/60',
-    'Pending Pickup': 'bg-yellow-100 text-yellow-800 border-yellow-200 dark:bg-yellow-900/40 dark:text-yellow-300 dark:border-yellow-800/60',
-    'Awaiting Parts': 'bg-orange-100 text-orange-800 border-orange-200 dark:bg-orange-900/40 dark:text-orange-300 dark:border-orange-800/60',
-    'Cancelled': 'bg-red-100 text-red-800 border-red-200 dark:bg-red-900/40 dark:text-red-300 dark:border-red-800/60',
+    'Delivered': 'bg-green-500/10 text-green-700 border-green-500/20 dark:text-green-300',
+    'In Repair': 'bg-blue-500/10 text-blue-700 border-blue-500/20 dark:text-blue-300',
+    'In-Shop': 'bg-cyan-500/10 text-cyan-700 border-cyan-500/20 dark:text-cyan-300',
+    'Diagnostics': 'bg-indigo-500/10 text-indigo-700 border-indigo-500/20 dark:text-indigo-300',
+    'Ready for Delivery': 'bg-purple-500/10 text-purple-700 border-purple-500/20 dark:text-purple-300',
+    'Pending Pickup': 'bg-yellow-500/10 text-yellow-700 border-yellow-500/20 dark:text-yellow-300',
+    'Awaiting Parts': 'bg-orange-500/10 text-orange-700 border-orange-500/20 dark:text-orange-300',
+    'Cancelled': 'bg-red-500/10 text-red-700 border-red-500/20 dark:text-red-300',
   };
 
   return (

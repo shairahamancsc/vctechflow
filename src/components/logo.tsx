@@ -22,7 +22,7 @@ export default function Logo({ className, showText = true }: LogoProps) {
       </div>
       {showText && (
         <div className="flex items-center gap-1">
-          <span className="font-stencil text-2xl font-bold" style={{ color: '#8B0000' }}>
+          <span className="font-stencil text-2xl font-bold text-primary">
             VC
           </span>
           <span className="text-xl font-bold font-headline tracking-tight">

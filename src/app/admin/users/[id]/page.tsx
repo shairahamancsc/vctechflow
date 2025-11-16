@@ -3,16 +3,22 @@
 import { use } from 'react';
 import { notFound } from 'next/navigation';
 import { getUserById, getServiceRequestsByCustomerId } from '@/lib/data';
-import type { User, ServiceRequest } from '@/lib/types';
+import type { User, ServiceRequest, WithId } from '@/lib/types';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Mail, Phone, MessageSquare, Package, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
+import { useStream } from '@/hooks/use-stream';
 
-function CustomerDetails({ user, requestsPromise }: { user: User; requestsPromise: Promise<ServiceRequest[]> }) {
-  const requests = use(requestsPromise);
+function CustomerDetails({ user }: { user: WithId<User>}) {
+  const { data: requests, loading } = useStream<ServiceRequest>(getServiceRequestsByCustomerId(user.id));
+
+  if (loading) {
+    return <p>Loading service history...</p>;
+  }
+
   return (
     <div className="space-y-6">
       <Card>
@@ -21,7 +27,7 @@ function CustomerDetails({ user, requestsPromise }: { user: User; requestsPromis
           <CardDescription>All service requests submitted by {user.name}.</CardDescription>
         </CardHeader>
         <CardContent>
-          {requests.length > 0 ? (
+          {requests && requests.length > 0 ? (
             <div className="space-y-8">
               {requests.map((req) => (
                 <div key={req.id} className="border-b pb-8 last:border-b-0">
@@ -42,7 +48,7 @@ function CustomerDetails({ user, requestsPromise }: { user: User; requestsPromis
                           <CardContent className="p-4">
                             <p className="font-medium text-sm mb-2">{log.note}</p>
                             <div className="flex items-center text-xs text-muted-foreground mb-2">
-                              <span>{log.timestamp.toLocaleDateString()}</span>
+                              <span>{new Date(log.timestamp).toLocaleDateString()}</span>
                             </div>
                             <div className="space-y-1">
                               {log.partsUsed?.map((part) => (
@@ -96,16 +102,12 @@ function TechnicianDetails({ user }: { user: User }) {
   );
 }
 
-export default function UserDetailsPage({ params: paramsPromise }: { params: Promise<{ id: string }> }) {
-  const params = use(paramsPromise);
-  const userPromise = getUserById(params.id);
+function UserDetailsContent({ userPromise }: { userPromise: Promise<WithId<User> | undefined> }) {
   const user = use(userPromise);
 
   if (!user) {
     notFound();
   }
-
-  const requestsPromise = user.role === 'customer' ? getServiceRequestsByCustomerId(user.id) : Promise.resolve([]);
 
   return (
     <div className="space-y-8">
@@ -140,7 +142,7 @@ export default function UserDetailsPage({ params: paramsPromise }: { params: Pro
           </Card>
         </div>
         <div className="md:col-span-2">
-          {user.role === 'customer' && <CustomerDetails user={user} requestsPromise={requestsPromise} />}
+          {user.role === 'customer' && <CustomerDetails user={user} />}
           {user.role === 'technician' && <TechnicianDetails user={user} />}
           {user.role === 'admin' && (
             <Card>
@@ -156,4 +158,11 @@ export default function UserDetailsPage({ params: paramsPromise }: { params: Pro
       </div>
     </div>
   );
+}
+
+
+export default function UserDetailsPage({ params }: { params: { id: string } }) {
+  const userPromise = getUserById(params.id);
+  
+  return <UserDetailsContent userPromise={userPromise} />;
 }

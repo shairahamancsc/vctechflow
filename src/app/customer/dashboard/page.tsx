@@ -1,3 +1,5 @@
+
+'use client';
 import Link from 'next/link';
 import { ArrowRight, PlusCircle } from 'lucide-react';
 import { getServiceRequestsByCustomerId } from '@/lib/data';
@@ -5,10 +7,11 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import StatusBadge from '@/components/status-badge';
 import { Separator } from '@/components/ui/separator';
+import { useStream } from '@/hooks/use-stream';
+import { ServiceRequest } from '@/lib/types';
 
-export default async function CustomerDashboard() {
-  // In a real app, you'd get the logged-in user's ID from a session.
-  const requests = await getServiceRequestsByCustomerId('user-1');
+export default function CustomerDashboard() {
+  const { data: requests, loading } = useStream<ServiceRequest>(getServiceRequestsByCustomerId('user-1'));
 
   return (
     <div className="space-y-8">
@@ -25,7 +28,13 @@ export default async function CustomerDashboard() {
         </Button>
       </div>
 
-      {requests.length > 0 ? (
+      {loading ? (
+         <Card className="text-center py-12">
+          <CardContent>
+            <p>Loading your service requests...</p>
+          </CardContent>
+        </Card>
+      ) : requests && requests.length > 0 ? (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {requests.map((request) => (
             <Card key={request.id} className="flex flex-col hover:shadow-lg transition-shadow duration-300">
@@ -42,7 +51,7 @@ export default async function CustomerDashboard() {
               <Separator className="my-4" />
               <CardFooter className="flex justify-between items-center">
                  <p className="text-xs text-muted-foreground">
-                    Last updated: {request.updatedAt.toLocaleDateString()}
+                    Last updated: {new Date(request.updatedAt).toLocaleDateString()}
                  </p>
                 <Button variant="outline" size="sm" asChild>
                   <Link href={`/customer/dashboard/${request.id}`}>

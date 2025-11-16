@@ -1,3 +1,4 @@
+
 'use client';
 
 import { getServiceRequestById } from '@/lib/data';
@@ -8,10 +9,9 @@ import StatusTimeline from '@/components/status-timeline';
 import { notFound } from 'next/navigation';
 import { Printer, User, Wrench, DollarSign } from 'lucide-react';
 import { use } from 'react';
+import { ServiceRequest, WithId } from '@/lib/types';
 
-export default function RequestDetailsPage({ params: paramsPromise }: { params: Promise<{ id: string }> }) {
-  const { id } = use(paramsPromise);
-  const requestPromise = getServiceRequestById(id);
+function RequestDetailsContent({ requestPromise }: { requestPromise: Promise<WithId<ServiceRequest> | undefined> }) {
   const request = use(requestPromise);
 
   if (!request) {
@@ -85,11 +85,18 @@ export default function RequestDetailsPage({ params: paramsPromise }: { params: 
                     <CardTitle>Status History</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <StatusTimeline logs={request.logs} currentStatus={request.status} />
+                    <StatusTimeline logs={request.logs.map(log => ({...log, timestamp: new Date(log.timestamp)}))} currentStatus={request.status} />
                 </CardContent>
             </Card>
         </div>
       </div>
     </div>
   );
+}
+
+
+export default function RequestDetailsPage({ params }: { params: { id: string } }) {
+  const requestPromise = getServiceRequestById(params.id);
+  
+  return <RequestDetailsContent requestPromise={requestPromise} />;
 }

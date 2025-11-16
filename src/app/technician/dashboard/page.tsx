@@ -1,12 +1,16 @@
+
+'use client';
 import Link from 'next/link';
 import { getAllServiceRequests } from '@/lib/data';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import StatusBadge from '@/components/status-badge';
+import { useStream } from '@/hooks/use-stream';
+import { ServiceRequest } from '@/lib/types';
 
-export default async function TechnicianDashboard() {
-  const requests = await getAllServiceRequests();
+export default function TechnicianDashboard() {
+  const { data: requests, loading } = useStream<ServiceRequest>(getAllServiceRequests());
 
   return (
     <div className="space-y-8">
@@ -32,7 +36,12 @@ export default async function TechnicianDashboard() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {requests.map((request) => (
+              {loading && (
+                <TableRow>
+                  <TableCell colSpan={5} className="text-center">Loading requests...</TableCell>
+                </TableRow>
+              )}
+              {requests && requests.map((request) => (
                 <TableRow key={request.id}>
                   <TableCell className="font-medium">{request.id}</TableCell>
                   <TableCell>{request.customer.name}</TableCell>

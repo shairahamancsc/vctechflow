@@ -1,3 +1,4 @@
+
 'use client';
 
 import { getServiceRequestById } from '@/lib/data';
@@ -8,7 +9,7 @@ import { Printer, User, MessageSquare, DollarSign } from 'lucide-react';
 import StatusBadge from '@/components/status-badge';
 import StatusTimeline from '@/components/status-timeline';
 import { updateServiceRequest } from '@/app/actions';
-import { serviceRequestStatuses, ServiceRequest } from '@/lib/types';
+import { serviceRequestStatuses, ServiceRequest, WithId } from '@/lib/types';
 import { useEffect, useActionState, useRef, use } from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -24,7 +25,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 
-function UpdateStatusForm({ request }: { request: ServiceRequest }) {
+function UpdateStatusForm({ request }: { request: WithId<ServiceRequest> }) {
     const router = useRouter();
     const { toast } = useToast();
     const formRef = useRef<HTMLFormElement>(null);
@@ -35,11 +36,8 @@ function UpdateStatusForm({ request }: { request: ServiceRequest }) {
             toast({
                 title: "Success",
                 description: state.message,
-                className: 'bg-accent text-accent-foreground'
             });
             formRef.current?.reset();
-            // We don't have access to revalidatePath on the client,
-            // so we refresh the page to see the changes.
             router.refresh();
         }
         if(state?.errors) {
@@ -90,7 +88,7 @@ function UpdateStatusForm({ request }: { request: ServiceRequest }) {
 }
 
 
-function ManageRequestContent({ requestPromise }: { requestPromise: Promise<ServiceRequest | undefined> }) {
+function ManageRequestContent({ requestPromise }: { requestPromise: Promise<WithId<ServiceRequest> | undefined> }) {
   const request = use(requestPromise);
   
   if (!request) {
@@ -153,7 +151,7 @@ function ManageRequestContent({ requestPromise }: { requestPromise: Promise<Serv
                     <CardTitle>Service Log</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <StatusTimeline logs={request.logs} currentStatus={request.status} />
+                    <StatusTimeline logs={request.logs.map(log => ({...log, timestamp: new Date(log.timestamp)}))} currentStatus={request.status} />
                 </CardContent>
             </Card>
         </div>
@@ -174,9 +172,8 @@ function ManageRequestContent({ requestPromise }: { requestPromise: Promise<Serv
   );
 }
 
-export default function ManageRequestPage({ params: paramsPromise }: { params: Promise<{ id: string }> }) {
-  const { id } = use(paramsPromise);
-  const requestPromise = getServiceRequestById(id);
+export default function ManageRequestPage({ params }: { params: { id: string } }) {
+  const requestPromise = getServiceRequestById(params.id);
   
   return <ManageRequestContent requestPromise={requestPromise} />;
 }

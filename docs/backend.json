@@ -1,0 +1,143 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "A user of the application.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The unique identifier for the user."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the user."
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "The email address of the user."
+        },
+        "role": {
+          "type": "string",
+          "enum": ["customer", "technician", "admin"]
+        },
+        "avatarUrl": {
+          "type": "string",
+          "description": "URL for the user's avatar image."
+        }
+      },
+      "required": ["id", "name", "email", "role"]
+    },
+    "Part": {
+      "title": "Part",
+      "description": "A spare part for a device.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "stock": {
+          "type": "number"
+        }
+      },
+      "required": ["id", "name", "stock"]
+    },
+    "ServiceLog": {
+      "title": "Service Log",
+      "description": "A log entry for a service request.",
+      "type": "object",
+      "properties": {
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "note": {
+          "type": "string"
+        },
+        "statusChange": {
+          "type": "string"
+        },
+        "partsUsed": {
+          "type": "array",
+          "items": {
+            "$ref": "#/entities/Part"
+          }
+        },
+        "amount": {
+          "type": "number"
+        }
+      },
+      "required": ["timestamp", "note"]
+    },
+    "ServiceRequest": {
+      "title": "Service Request",
+      "description": "A request for service.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "customer": {
+          "$ref": "#/entities/User"
+        },
+        "technician": {
+          "$ref": "#/entities/User"
+        },
+        "printerModel": {
+          "type": "string"
+        },
+        "issueDescription": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "logs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/entities/ServiceLog"
+          }
+        },
+        "amount": {
+          "type": "number"
+        }
+      },
+      "required": ["id", "customer", "printerModel", "issueDescription", "status", "createdAt", "updatedAt"]
+    }
+  },
+  "auth": {
+    "providers": ["anonymous"]
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": {
+        "$ref": "#/entities/User"
+      },
+      "description": "Stores user profiles."
+    },
+    "/parts/{partId}": {
+      "schema": {
+        "$ref": "#/entities/Part"
+      },
+      "description": "Stores available parts information."
+    },
+    "/serviceRequests/{requestId}": {
+      "schema": {
+        "$ref": "#/entities/ServiceRequest"
+      },
+      "description": "Stores all service requests."
+    }
+  }
+}
