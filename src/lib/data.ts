@@ -1,3 +1,4 @@
+
 import type { User, Part, ServiceRequest, ServiceLog } from './types';
 import { PlaceHolderImages } from './placeholder-images';
 
@@ -101,4 +102,8 @@ export const getAllParts = async () => {
 
 export const getUserById = async (id: string) => {
     return users.find(user => user.id === id);
+}
+
+export const getUsers = async () => {
+    return users;
 }

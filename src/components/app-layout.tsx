@@ -21,7 +21,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
 import Logo from '@/components/logo';
 import type { User } from '@/lib/types';
-import { LogOut, ClipboardList, PlusCircle, PackageSearch, MoreVertical, ShieldCheck } from 'lucide-react';
+import { LogOut, ClipboardList, PlusCircle, PackageSearch, MoreVertical, ShieldCheck, Users } from 'lucide-react';
 import NavigationButtons from './navigation-buttons';
 import {
   DropdownMenu,
@@ -36,6 +36,7 @@ const iconMap = {
   PlusCircle,
   PackageSearch,
   ShieldCheck,
+  Users,
 };
 
 type NavItem = {
@@ -57,6 +58,7 @@ const technicianNavItems: NavItem[] = [
 
 const baseAdminNavItems: NavItem[] = [
   { href: '/admin/dashboard', label: 'Admin Dashboard', icon: 'ShieldCheck', tooltip: 'Admin Dashboard' },
+  { href: '/admin/users', label: 'User Management', icon: 'Users', tooltip: 'Manage Users' },
 ];
 
 const adminNavItems: NavItem[] = [
