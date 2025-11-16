@@ -1,143 +1,358 @@
 {
   "entities": {
-    "User": {
-      "title": "User",
-      "description": "A user of the application.",
+    "Customer": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Customer",
       "type": "object",
+      "description": "Represents a customer who submits service requests.",
       "properties": {
         "id": {
           "type": "string",
-          "description": "The unique identifier for the user."
+          "description": "Unique identifier for the customer."
         },
-        "name": {
+        "firstName": {
           "type": "string",
-          "description": "The name of the user."
+          "description": "First name of the customer."
+        },
+        "lastName": {
+          "type": "string",
+          "description": "Last name of the customer."
         },
         "email": {
           "type": "string",
-          "format": "email",
-          "description": "The email address of the user."
+          "description": "Email address of the customer.",
+          "format": "email"
         },
-        "role": {
+        "phoneNumber": {
           "type": "string",
-          "enum": ["customer", "technician", "admin"]
+          "description": "Phone number of the customer."
         },
-        "avatarUrl": {
+        "address": {
           "type": "string",
-          "description": "URL for the user's avatar image."
+          "description": "Address of the customer."
         }
       },
-      "required": ["id", "name", "email", "role"]
+      "required": [
+        "id",
+        "firstName",
+        "lastName",
+        "email",
+        "phoneNumber",
+        "address"
+      ]
     },
-    "Part": {
-      "title": "Part",
-      "description": "A spare part for a device.",
+    "Technician": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Technician",
       "type": "object",
+      "description": "Represents a technician who handles service requests.",
       "properties": {
         "id": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        },
-        "stock": {
-          "type": "number"
-        }
-      },
-      "required": ["id", "name", "stock"]
-    },
-    "ServiceLog": {
-      "title": "Service Log",
-      "description": "A log entry for a service request.",
-      "type": "object",
-      "properties": {
-        "timestamp": {
           "type": "string",
-          "format": "date-time"
+          "description": "Unique identifier for the technician."
         },
-        "note": {
-          "type": "string"
+        "firstName": {
+          "type": "string",
+          "description": "First name of the technician."
         },
-        "statusChange": {
-          "type": "string"
+        "lastName": {
+          "type": "string",
+          "description": "Last name of the technician."
         },
-        "partsUsed": {
-          "type": "array",
-          "items": {
-            "$ref": "#/entities/Part"
-          }
+        "email": {
+          "type": "string",
+          "description": "Email address of the technician.",
+          "format": "email"
         },
-        "amount": {
-          "type": "number"
+        "phoneNumber": {
+          "type": "string",
+          "description": "Phone number of the technician."
         }
       },
-      "required": ["timestamp", "note"]
+      "required": [
+        "id",
+        "firstName",
+        "lastName",
+        "email",
+        "phoneNumber"
+      ]
     },
     "ServiceRequest": {
-      "title": "Service Request",
-      "description": "A request for service.",
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "ServiceRequest",
       "type": "object",
+      "description": "Represents a service request submitted by a customer.",
       "properties": {
         "id": {
-          "type": "string"
+          "type": "string",
+          "description": "Unique identifier for the service request."
         },
-        "customer": {
-          "$ref": "#/entities/User"
-        },
-        "technician": {
-          "$ref": "#/entities/User"
+        "customerId": {
+          "type": "string",
+          "description": "Reference to Customer. (Relationship: Customer 1:N ServiceRequest)"
         },
         "printerModel": {
-          "type": "string"
+          "type": "string",
+          "description": "Model of the printer requiring service."
         },
         "issueDescription": {
-          "type": "string"
+          "type": "string",
+          "description": "Description of the issue with the printer."
         },
         "status": {
-          "type": "string"
-        },
-        "createdAt": {
           "type": "string",
-          "format": "date-time"
+          "description": "Current status of the service request (e.g., 'Open', 'In Progress', 'Resolved')."
         },
-        "updatedAt": {
+        "dateSubmitted": {
           "type": "string",
+          "description": "Date and time the service request was submitted.",
           "format": "date-time"
-        },
-        "logs": {
-          "type": "array",
-          "items": {
-            "$ref": "#/entities/ServiceLog"
-          }
-        },
-        "amount": {
-          "type": "number"
         }
       },
-      "required": ["id", "customer", "printerModel", "issueDescription", "status", "createdAt", "updatedAt"]
+      "required": [
+        "id",
+        "customerId",
+        "printerModel",
+        "issueDescription",
+        "status",
+        "dateSubmitted"
+      ]
+    },
+    "ServiceLog": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "ServiceLog",
+      "type": "object",
+      "description": "Represents a log entry for a service performed on a printer.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the service log entry."
+        },
+        "serviceRequestId": {
+          "type": "string",
+          "description": "Reference to ServiceRequest. (Relationship: ServiceRequest 1:N ServiceLog)"
+        },
+        "technicianId": {
+          "type": "string",
+          "description": "Reference to Technician. (Relationship: Technician 1:N ServiceLog)"
+        },
+        "dateServiced": {
+          "type": "string",
+          "description": "Date and time the service was performed.",
+          "format": "date-time"
+        },
+        "partsReplaced": {
+          "type": "string",
+          "description": "Description of parts replaced during the service."
+        },
+        "laborTime": {
+          "type": "number",
+          "description": "Amount of labor time spent on the service (in hours)."
+        },
+        "notes": {
+          "type": "string",
+          "description": "Additional notes about the service."
+        }
+      },
+      "required": [
+        "id",
+        "serviceRequestId",
+        "technicianId",
+        "dateServiced",
+        "partsReplaced",
+        "laborTime"
+      ]
+    },
+    "Part": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Part",
+      "type": "object",
+      "description": "Represents a replacement part in the inventory.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the part."
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the part."
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of the part."
+        },
+        "quantity": {
+          "type": "number",
+          "description": "Quantity of the part in the inventory."
+        },
+        "cost": {
+          "type": "number",
+          "description": "Cost of the part."
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "description",
+        "quantity",
+        "cost"
+      ]
+    },
+    "Notification": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Notification",
+      "type": "object",
+      "description": "Represents a notification sent to a user.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the notification."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to the user (Customer or Technician) receiving the notification."
+        },
+        "message": {
+          "type": "string",
+          "description": "The content of the notification."
+        },
+        "type": {
+          "type": "string",
+          "description": "The type of notification (e.g., 'Service Request Created', 'Technician Assigned', 'Printer Ready')."
+        },
+        "dateSent": {
+          "type": "string",
+          "description": "The date and time the notification was sent.",
+          "format": "date-time"
+        },
+        "isRead": {
+          "type": "boolean",
+          "description": "Indicates whether the notification has been read by the user."
+        },
+        "serviceRequestId": {
+          "type": "string",
+          "description": "Reference to ServiceRequest. (Relationship: ServiceRequest 1:N Notification).  Optional, only present if the notification is service request related"
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "message",
+        "type",
+        "dateSent",
+        "isRead"
+      ]
     }
   },
   "auth": {
-    "providers": ["anonymous"]
+    "providers": [
+      "password",
+      "anonymous"
+    ]
   },
   "firestore": {
-    "/users/{userId}": {
-      "schema": {
-        "$ref": "#/entities/User"
+    "structure": [
+      {
+        "path": "/customers/{customerId}",
+        "definition": {
+          "entityName": "Customer",
+          "schema": {
+            "$ref": "#/backend/entities/Customer"
+          },
+          "description": "Stores customer data.  Path-based ownership.",
+          "params": [
+            {
+              "name": "customerId",
+              "description": "Unique identifier for the customer."
+            }
+          ]
+        }
       },
-      "description": "Stores user profiles."
-    },
-    "/parts/{partId}": {
-      "schema": {
-        "$ref": "#/entities/Part"
+      {
+        "path": "/technicians/{technicianId}",
+        "definition": {
+          "entityName": "Technician",
+          "schema": {
+            "$ref": "#/backend/entities/Technician"
+          },
+          "description": "Stores technician data. Path-based ownership.",
+          "params": [
+            {
+              "name": "technicianId",
+              "description": "Unique identifier for the technician."
+            }
+          ]
+        }
       },
-      "description": "Stores available parts information."
-    },
-    "/serviceRequests/{requestId}": {
-      "schema": {
-        "$ref": "#/entities/ServiceRequest"
+      {
+        "path": "/serviceRequests/{serviceRequestId}",
+        "definition": {
+          "entityName": "ServiceRequest",
+          "schema": {
+            "$ref": "#/backend/entities/ServiceRequest"
+          },
+          "description": "Stores service request data. Includes customerId for querying service requests by customer.",
+          "params": [
+            {
+              "name": "serviceRequestId",
+              "description": "Unique identifier for the service request."
+            }
+          ]
+        }
       },
-      "description": "Stores all service requests."
-    }
+      {
+        "path": "/serviceRequests/{serviceRequestId}/logs/{logId}",
+        "definition": {
+          "entityName": "ServiceLog",
+          "schema": {
+            "$ref": "#/backend/entities/ServiceLog"
+          },
+          "description": "Stores service logs associated with a service request.",
+          "params": [
+            {
+              "name": "serviceRequestId",
+              "description": "Unique identifier for the service request."
+            },
+            {
+              "name": "logId",
+              "description": "Unique identifier for the service log."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/notifications/{notificationId}",
+        "definition": {
+          "entityName": "Notification",
+          "schema": {
+            "$ref": "#/backend/entities/Notification"
+          },
+          "description": "Stores notifications for users. Includes userId for querying notifications by user.",
+          "params": [
+            {
+              "name": "notificationId",
+              "description": "Unique identifier for the notification."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/parts/{partId}",
+        "definition": {
+          "entityName": "Part",
+          "schema": {
+            "$ref": "#/backend/entities/Part"
+          },
+          "description": "Stores data about replacement parts.",
+          "params": [
+            {
+              "name": "partId",
+              "description": "Unique identifier for the part."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "The Firestore structure is designed to support the ServiceFlow application, focusing on service requests, technician assignments, and customer notifications. It prioritizes authorization independence and clear security rules.\n\n**Customers:** Customer data is stored in `/customers/{customerId}`. This ensures that customer data is isolated and can be secured independently.\n\n**Technicians:** Technician data is stored in `/technicians/{technicianId}`. Similar to customers, this allows for independent security rules.\n\n**Service Requests:** Service requests are stored in `/serviceRequests/{serviceRequestId}`. Each service request includes the `customerId` and `status`. This enables efficient querying of service requests by customer and status.\n\n**Service Logs:** Service logs are stored in `/serviceRequests/{serviceRequestId}/logs/{logId}` as a subcollection of service requests. This reflects the relationship between a service request and its logs.\n\n**Notifications:** Notifications are stored in `/notifications/{notificationId}`. Each notification includes the `userId` to whom the notification is directed. This supports efficient retrieval of notifications for a specific user.\n\n**Authorization Independence:** The structure achieves authorization independence by avoiding hierarchical `get()` calls.  For example, service logs are directly linked to a service request and do not require fetching customer data to determine access.\n\n**QAPs (Rules are not Filters):**\n*   **List Operations:** The segregation of data into collections like `/customers`, `/technicians`, `/serviceRequests`, and `/notifications` allows for secure list operations.  Rules can be written to limit access based on the authenticated user's role and the data within each document (e.g., a customer can only list their own service requests).\n*   **Path-Based Ownership:** The paths `/customers/{customerId}`, `/technicians/{technicianId}` and the structure `/serviceRequests/{serviceRequestId}/logs/{logId}` makes ownership explicit, which allows rules to validate `request.auth.uid` against the respective customer/technician ID without needing to read any data to ensure a QAP.\n\nThis design ensures a secure, scalable, and debuggable Firestore structure that aligns with the application's requirements."
   }
 }

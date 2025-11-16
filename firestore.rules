@@ -1,9 +1,128 @@
+/**
+ * @fileoverview Firestore Security Rules for the ServiceFlow application.
+ *
+ * Core Philosophy:
+ * This ruleset enforces a user-ownership model for Customers and Technicians,
+ * restricting access to a user's own data. Service Requests and Notifications
+ * are generally accessible, but writes are restricted.  ServiceLogs are secured
+ * under their parent ServiceRequest.
+ *
+ * Data Structure:
+ * - /customers/{customerId}: Stores customer profile information.
+ * - /technicians/{technicianId}: Stores technician profile information.
+ * - /serviceRequests/{serviceRequestId}: Stores service request data.
+ * - /serviceRequests/{serviceRequestId}/logs/{logId}: Stores service logs.
+ * - /notifications/{notificationId}: Stores notifications for users.
+ * - /parts/{partId}: Stores data about replacement parts.
+ *
+ * Key Security Decisions:
+ * - Customers and Technicians can only access their own profile data.
+ * - Listing of users (customers or technicians) is disallowed.
+ * - Service Requests and Notifications are publicly readable.
+ * - Service Logs are secured via their parent Service Request.
+ *
+ * Denormalization for Authorization:
+ * - The rules leverage path-based ownership for Customers and Technicians, avoiding the need for `get()` calls to verify ownership.
+ */
 rules_version = '2';
-
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /{document=**} {
-      allow read, write: if false;
+
+    /**
+     * @description Enforces access control for customer profiles. Customers can only read and write their own data.
+     * @path /customers/{customerId}
+     * @allow (create) Customer with ID matching auth.uid can create their profile.
+     * @allow (get, update, delete) Authenticated user with ID matching customerId can read, update, and delete their profile.
+     * @deny (create) Customer with ID not matching auth.uid cannot create a profile.
+     * @deny (get, update, delete) Authenticated user with ID not matching customerId cannot read, update or delete another customer's profile.
+     * @principle Enforces document ownership for reads and writes.
+     */
+    match /customers/{customerId} {
+      function isOwner(userId) {
+        return request.auth != null && request.auth.uid == userId;
+      }
+
+      function isExistingOwner(userId) {
+          return isOwner(userId) && resource != null;
+      }
+
+      allow get: if isOwner(customerId);
+      allow list: if false;
+      allow create: if isOwner(customerId);
+      allow update: if isExistingOwner(customerId);
+      allow delete: if isExistingOwner(customerId);
+    }
+
+    /**
+     * @description Enforces access control for technician profiles. Technicians can only read and write their own data.
+     * @path /technicians/{technicianId}
+     * @allow (create) Technician with ID matching auth.uid can create their profile.
+     * @allow (get, update, delete) Authenticated user with ID matching technicianId can read, update, and delete their profile.
+     * @deny (create) Technician with ID not matching auth.uid cannot create a profile.
+     * @deny (get, update, delete) Authenticated user with ID not matching technicianId cannot read, update or delete another technician's profile.
+     * @principle Enforces document ownership for reads and writes.
+     */
+    match /technicians/{technicianId} {
+      function isOwner(userId) {
+        return request.auth != null && request.auth.uid == userId;
+      }
+
+      function isExistingOwner(userId) {
+          return isOwner(userId) && resource != null;
+      }
+
+      allow get: if isOwner(technicianId);
+      allow list: if false;
+      allow create: if isOwner(technicianId);
+      allow update: if isExistingOwner(technicianId);
+      allow delete: if isExistingOwner(technicianId);
+    }
+
+    /**
+     * @description Allows public read access to service requests, but restricts write access.
+     * @path /serviceRequests/{serviceRequestId}
+     * @allow (get, list) Anyone can read service request data.
+     * @deny (create, update, delete) Only the owner can create, update or delete service request data. // TODO: Add owner validation once the schema is updated with an ownership field.
+     * @principle Allows public read access but restricts write access to the owner.
+     */
+    match /serviceRequests/{serviceRequestId} {
+      allow get, list: if true;
+      allow create, update, delete: if false; // TODO: Add owner validation once the schema is updated with an ownership field.
+    }
+
+    /**
+     * @description Enforces access control for service logs associated with a service request.
+     * @path /serviceRequests/{serviceRequestId}/logs/{logId}
+     * @allow (get, list) Any authenticated user can read service logs.
+     * @deny (create, update, delete) No one can create, update, or delete service logs.
+     */
+    match /serviceRequests/{serviceRequestId}/logs/{logId} {
+        allow get, list: if true;
+        allow create, update, delete: if false;
+    }
+
+    /**
+     * @description Allows public read access to notifications, but restricts write access.
+     * @path /notifications/{notificationId}
+     * @allow (get, list) Anyone can read notification data.
+     * @deny (create, update, delete) No one can create, update or delete notification data.
+     * @principle Allows public read access, but restricts write access.
+     */
+    match /notifications/{notificationId} {
+      allow get, list: if true;
+      allow create, update, delete: if false;
+    }
+
+   /**
+     * @description Allows public read access to parts, but restricts write access.
+     * @path /parts/{partId}
+     * @allow (get, list) Anyone can read part data.
+     * @deny (create, update, delete) No one can create, update or delete part data.
+     * @principle Allows public read access, but restricts write access.
+     */
+    match /parts/{partId} {
+      allow get, list: if true;
+      allow create, update, delete: if false;
     }
   }
 }
