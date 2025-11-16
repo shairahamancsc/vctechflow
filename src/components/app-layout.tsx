@@ -56,7 +56,9 @@ const technicianNavItems: NavItem[] = [
 ];
 
 const adminNavItems: NavItem[] = [
-  { href: '/admin/dashboard', label: 'Dashboard', icon: 'ShieldCheck', tooltip: 'Admin Dashboard' },
+  { href: '/admin/dashboard', label: 'Admin Dashboard', icon: 'ShieldCheck', tooltip: 'Admin Dashboard' },
+  { href: '/customer/dashboard', label: 'Customer Portal', icon: 'ClipboardList', tooltip: 'Customers' },
+  { href: '/technician/dashboard', label: 'Technician Portal', icon: 'PackageSearch', tooltip: 'Technicians' },
 ];
 
 
