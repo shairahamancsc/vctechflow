@@ -1,18 +1,18 @@
 
 'use client';
-import { use, useEffect, useState } from 'react';
+import { use } from 'react';
 import { notFound } from 'next/navigation';
 import { getUserById, getServiceRequestsByCustomerId } from '@/lib/data';
-import type { User, ServiceRequest, ServiceLog, Part } from '@/lib/types';
+import type { User, ServiceRequest } from '@/lib/types';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
-import { Mail, Phone, MessageSquare, Wrench, Package, ArrowLeft } from 'lucide-react';
+import { Mail, Phone, MessageSquare, Package, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 
-function CustomerDetails({ user, requests }: { user: User; requests: ServiceRequest[] }) {
+function CustomerDetails({ user, requestsPromise }: { user: User; requestsPromise: Promise<ServiceRequest[]> }) {
+  const requests = use(requestsPromise);
   return (
     <div className="space-y-6">
       <Card>
@@ -96,31 +96,16 @@ function TechnicianDetails({ user }: { user: User }) {
   );
 }
 
-export default function UserDetailsPage({ params }: { params: { id: string } }) {
-  const [user, setUser] = useState<User | undefined>(undefined);
-  const [requests, setRequests] = useState<ServiceRequest[]>([]);
-
-  useEffect(() => {
-    async function fetchData() {
-      const fetchedUser = await getUserById(params.id);
-      setUser(fetchedUser);
-
-      if (fetchedUser?.role === 'customer') {
-        const fetchedRequests = await getServiceRequestsByCustomerId(fetchedUser.id);
-        setRequests(fetchedRequests);
-      }
-    }
-    fetchData();
-  }, [params.id]);
-
+export default function UserDetailsPage({ params: paramsPromise }: { params: Promise<{ id: string }> }) {
+  const params = use(paramsPromise);
+  const userPromise = getUserById(params.id);
+  const user = use(userPromise);
 
   if (!user) {
-    return (
-      <div className="flex justify-center items-center h-64">
-        <p>Loading user details...</p>
-      </div>
-    );
+    notFound();
   }
+
+  const requestsPromise = user.role === 'customer' ? getServiceRequestsByCustomerId(user.id) : Promise.resolve([]);
 
   return (
     <div className="space-y-8">
@@ -155,7 +140,7 @@ export default function UserDetailsPage({ params }: { params: { id: string } }) 
           </Card>
         </div>
         <div className="md:col-span-2">
-          {user.role === 'customer' && <CustomerDetails user={user} requests={requests} />}
+          {user.role === 'customer' && <CustomerDetails user={user} requestsPromise={requestsPromise} />}
           {user.role === 'technician' && <TechnicianDetails user={user} />}
           {user.role === 'admin' && (
             <Card>

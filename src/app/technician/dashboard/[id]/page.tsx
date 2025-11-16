@@ -89,9 +89,10 @@ function UpdateStatusForm({ request }: { request: ServiceRequest }) {
     );
 }
 
-export default function ManageRequestPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = use(params);
-  const request = use(getServiceRequestById(id));
+export default function ManageRequestPage({ params: paramsPromise }: { params: Promise<{ id: string }> }) {
+  const { id } = use(paramsPromise);
+  const requestPromise = getServiceRequestById(id);
+  const request = use(requestPromise);
   
   if (!request) {
     notFound();
