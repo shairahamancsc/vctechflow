@@ -10,16 +10,13 @@ let auth: Auth | undefined;
 let firestore: Firestore | undefined;
 
 function initializeFirebase() {
-  if (!firebaseApp) {
-    const apps = getApps();
-    if (apps.length) {
-      firebaseApp = apps[0];
-    } else {
-      firebaseApp = initializeApp(firebaseConfig);
-    }
-    auth = getAuth(firebaseApp);
-    firestore = getFirestore(firebaseApp);
+  if (!getApps().length) {
+    firebaseApp = initializeApp(firebaseConfig);
+  } else {
+    firebaseApp = getApps()[0];
   }
+  auth = getAuth(firebaseApp);
+  firestore = getFirestore(firebaseApp);
   
   return { firebaseApp, auth, firestore };
 }

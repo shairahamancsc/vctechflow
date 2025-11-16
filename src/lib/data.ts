@@ -3,19 +3,13 @@ import type { User, Part, ServiceRequest, ServiceLog, WithId } from './types';
 import { getFirestore, collection, query, where, doc, getDoc, Firestore } from 'firebase/firestore';
 import { initializeFirebase } from '@/firebase';
 
-let db: Firestore | undefined;
-function getDb() {
-  if (!db) {
-    const { firestore } = initializeFirebase();
-    db = firestore;
-  }
-  return db as Firestore;
-}
+const { firestore: db } = initializeFirebase();
 
 
 export const getServiceRequestsByCustomerId = (customerId: string) => {
     try {
-        const requestsRef = collection(getDb(), "serviceRequests");
+        if (!db) throw new Error("Firestore is not initialized.");
+        const requestsRef = collection(db, "serviceRequests");
         return query(requestsRef, where("customer.id", "==", customerId));
     } catch(e) {
         console.error(e);
@@ -25,7 +19,8 @@ export const getServiceRequestsByCustomerId = (customerId: string) => {
 
 export const getServiceRequestById = async (id: string): Promise<WithId<ServiceRequest> | undefined> => {
     try {
-        const docRef = doc(getDb(), "serviceRequests", id);
+        if (!db) throw new Error("Firestore is not initialized.");
+        const docRef = doc(db, "serviceRequests", id);
         const docSnap = await getDoc(docRef);
         if(docSnap.exists()){
             return { id: docSnap.id, ...docSnap.data() } as WithId<ServiceRequest>;
@@ -38,7 +33,8 @@ export const getServiceRequestById = async (id: string): Promise<WithId<ServiceR
 
 export const getAllServiceRequests = () => {
     try {
-        return query(collection(getDb(), "serviceRequests"));
+        if (!db) throw new Error("Firestore is not initialized.");
+        return query(collection(db, "serviceRequests"));
     } catch(e) {
         console.error(e);
         return null;
@@ -47,7 +43,8 @@ export const getAllServiceRequests = () => {
 
 export const getAllParts = () => {
     try {
-        return query(collection(getDb(), "parts"));
+        if (!db) throw new Error("Firestore is not initialized.");
+        return query(collection(db, "parts"));
     } catch(e) {
         console.error(e);
         return null;
@@ -56,7 +53,8 @@ export const getAllParts = () => {
 
 export const getUserById = async (id: string): Promise<WithId<User> | undefined> => {
     try {
-        const docRef = doc(getDb(), "users", id);
+        if (!db) throw new Error("Firestore is not initialized.");
+        const docRef = doc(db, "users", id);
         const docSnap = await getDoc(docRef);
         if(docSnap.exists()){
             return { id: docSnap.id, ...docSnap.data() } as WithId<User>;
@@ -69,7 +67,8 @@ export const getUserById = async (id: string): Promise<WithId<User> | undefined>
 
 export const getAllUsers = () => {
     try {
-        return query(collection(getDb(), "users"));
+        if (!db) throw new Error("Firestore is not initialized.");
+        return query(collection(db, "users"));
     } catch(e) {
         console.error(e);
         return null;
