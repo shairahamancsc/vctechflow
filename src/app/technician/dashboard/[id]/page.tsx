@@ -89,9 +89,8 @@ function UpdateStatusForm({ request }: { request: ServiceRequest }) {
     );
 }
 
-export default function ManageRequestPage({ params: paramsPromise }: { params: Promise<{ id: string }> }) {
-  const { id } = use(paramsPromise);
-  const requestPromise = getServiceRequestById(id);
+
+function ManageRequestContent({ requestPromise }: { requestPromise: Promise<ServiceRequest | undefined> }) {
   const request = use(requestPromise);
   
   if (!request) {
@@ -173,4 +172,11 @@ export default function ManageRequestPage({ params: paramsPromise }: { params: P
       </div>
     </div>
   );
+}
+
+export default function ManageRequestPage({ params: paramsPromise }: { params: Promise<{ id: string }> }) {
+  const { id } = use(paramsPromise);
+  const requestPromise = getServiceRequestById(id);
+  
+  return <ManageRequestContent requestPromise={requestPromise} />;
 }
