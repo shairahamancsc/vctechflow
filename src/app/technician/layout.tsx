@@ -16,8 +16,12 @@ export default async function TechnicianLayout({ children }: { children: React.R
     return <div>User not found</div>;
   }
 
+  // If the user is an admin, we pass the 'admin' role to the AppLayout
+  // so they get the combined navigation menu.
+  const layoutRole = user.role === 'admin' ? 'admin' : 'technician';
+
   return (
-    <AppLayout user={user} userRole={user.role as 'technician' | 'admin'}>
+    <AppLayout user={user} userRole={layoutRole}>
       {children}
     </AppLayout>
   );
