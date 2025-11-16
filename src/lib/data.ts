@@ -1,13 +1,15 @@
 
 import type { User, Part, ServiceRequest, ServiceLog, WithId } from './types';
-import { getFirestore, collection, query, where, doc, getDoc } from 'firebase/firestore';
+import { getFirestore, collection, query, where, doc, getDoc, Firestore } from 'firebase/firestore';
+import { initializeFirebase } from '@/firebase';
 
-let db: any;
+let db: Firestore | undefined;
 function getDb() {
   if (!db) {
-    db = getFirestore();
+    const { firestore } = initializeFirebase();
+    db = firestore;
   }
-  return db;
+  return db as Firestore;
 }
 
 
