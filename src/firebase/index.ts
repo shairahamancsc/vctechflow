@@ -4,15 +4,13 @@ import { getFirestore, Firestore } from "firebase/firestore";
 import { firebaseConfig } from "./config";
 
 export * from './provider';
-export * from './auth/use-user';
-export * from './firestore/use-collection';
 
 let firebaseApp: FirebaseApp | undefined;
 let auth: Auth | undefined;
 let firestore: Firestore | undefined;
 
 function initializeFirebase() {
-  if (typeof window !== "undefined" && !firebaseApp) {
+  if (!firebaseApp) {
     const apps = getApps();
     if (apps.length) {
       firebaseApp = apps[0];
