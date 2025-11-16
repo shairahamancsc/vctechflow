@@ -1,6 +1,8 @@
 
+'use client';
+
 import Link from 'next/link';
-import { getUsers } from '@/lib/data';
+import { getAllUsers } from '@/lib/data';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -13,9 +15,34 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { deleteUser } from '@/app/actions';
+import { useToast } from '@/hooks/use-toast';
+import { use, useState, useEffect } from 'react';
+import AddUserDialog from './add-user-dialog';
 
-export default async function UserManagementPage() {
-  const users = await getUsers();
+export default function UserManagementPage() {
+  const { toast } = useToast();
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [users, setUsers] = useState(use(getAllUsers()));
+
+  useEffect(() => {
+    // This is a workaround to re-fetch users when the dialog closes
+    // In a real app with a database, you would likely use a state management library
+    // or a different re-fetching strategy.
+    if(!isDialogOpen) {
+      getAllUsers().then(setUsers);
+    }
+  }, [isDialogOpen]);
+
+  const handleDelete = async (userId: string) => {
+    if (confirm('Are you sure you want to delete this user? This action cannot be undone.')) {
+      const result = await deleteUser(userId);
+      toast({
+        title: 'User Deletion',
+        description: result.message,
+      });
+    }
+  };
 
   return (
     <div className="space-y-8">
@@ -24,7 +51,7 @@ export default async function UserManagementPage() {
           <h1 className="text-3xl font-bold font-headline">User Management</h1>
           <p className="text-muted-foreground">View, add, and manage all users in the system.</p>
         </div>
-        <Button>
+        <Button onClick={() => setIsDialogOpen(true)}>
           <PlusCircle className="mr-2 h-4 w-4" />
           Add User
         </Button>
@@ -74,8 +101,14 @@ export default async function UserManagementPage() {
                         <DropdownMenuItem asChild>
                           <Link href={`/admin/users/${user.id}`}>View Details</Link>
                         </DropdownMenuItem>
-                        <DropdownMenuItem>Edit User</DropdownMenuItem>
-                        <DropdownMenuItem className="text-destructive">Delete User</DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                          <Link href={`/admin/users/${user.id}`}>Edit User</Link>
+                        </DropdownMenuItem>
+                         <DropdownMenuItem 
+                            onClick={() => handleDelete(user.id)}
+                            className="text-destructive">
+                            Delete User
+                        </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </TableCell>
@@ -85,6 +118,7 @@ export default async function UserManagementPage() {
           </Table>
         </CardContent>
       </Card>
+      <AddUserDialog open={isDialogOpen} onOpenChange={setIsDialogOpen} />
     </div>
   );
 }

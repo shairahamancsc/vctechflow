@@ -85,15 +85,19 @@ export const serviceRequests: ServiceRequest[] = [
 
 // Helper functions to simulate data fetching
 export const getServiceRequestsByCustomerId = async (customerId: string) => {
-    return serviceRequests.filter(req => req.customer.id === customerId);
+    // Return a copy to avoid mutation issues in client components
+    return JSON.parse(JSON.stringify(serviceRequests.filter(req => req.customer.id === customerId)));
 }
 
 export const getServiceRequestById = async (id: string) => {
-    return serviceRequests.find(req => req.id === id);
+    const request = serviceRequests.find(req => req.id === id);
+    // Return a copy to avoid mutation issues in client components
+    return request ? JSON.parse(JSON.stringify(request)) : undefined;
 }
 
 export const getAllServiceRequests = async () => {
-    return serviceRequests;
+    // Return a copy to avoid mutation issues in client components
+    return JSON.parse(JSON.stringify(serviceRequests));
 }
 
 export const getAllParts = async () => {
@@ -101,9 +105,10 @@ export const getAllParts = async () => {
 }
 
 export const getUserById = async (id: string) => {
-    return users.find(user => user.id === id);
+    const user = users.find(user => user.id === id);
+    return user ? {...user} : undefined;
 }
 
-export const getUsers = async () => {
-    return users;
+export const getAllUsers = async () => {
+    return [...users];
 }
