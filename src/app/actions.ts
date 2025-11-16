@@ -6,8 +6,9 @@ import { z } from 'zod';
 import { serviceRequestStatuses } from '@/lib/types';
 import { getFirestore, collection, addDoc, updateDoc, doc, serverTimestamp, setDoc, getDoc, deleteDoc } from 'firebase/firestore';
 import { getUserById } from '@/lib/data';
+import { initializeFirebase } from '@/firebase';
 
-const db = getFirestore();
+const { firestore: db } = initializeFirebase();
 
 const NewRequestSchema = z.object({
   printerModel: z.string().min(3, 'Printer model is required'),
