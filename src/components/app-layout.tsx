@@ -55,10 +55,14 @@ const technicianNavItems: NavItem[] = [
   { href: '/technician/inventory', label: 'Parts Inventory', icon: 'PackageSearch', tooltip: 'Inventory' },
 ];
 
-const adminNavItems: NavItem[] = [
+const baseAdminNavItems: NavItem[] = [
   { href: '/admin/dashboard', label: 'Admin Dashboard', icon: 'ShieldCheck', tooltip: 'Admin Dashboard' },
-  { href: '/customer/dashboard', label: 'Customer Portal', icon: 'ClipboardList', tooltip: 'Customers' },
-  { href: '/technician/dashboard', label: 'Technician Portal', icon: 'PackageSearch', tooltip: 'Technicians' },
+];
+
+const adminNavItems: NavItem[] = [
+  ...baseAdminNavItems,
+  ...customerNavItems.map(item => ({...item, label: `Customer: ${item.label}`})),
+  ...technicianNavItems.map(item => ({...item, label: `Technician: ${item.label}`})),
 ];
 
 
