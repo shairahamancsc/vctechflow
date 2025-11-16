@@ -1,7 +1,7 @@
 
 import { initializeApp, getApps, getApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
-import { firebaseConfig } from './config';
+import { serverFirebaseConfig } from './config';
 
 // Initialize Firebase for server-side usage
 if (!getApps().length) {
@@ -10,9 +10,11 @@ if (!getApps().length) {
       initializeApp();
     } catch (e) {
       if (process.env.NODE_ENV === "production") {
-        console.warn('Automatic initialization failed. Falling back to firebase config object.', e);
+        console.warn('Automatic initialization failed. Falling back to server firebase config object.', e);
+        initializeApp(serverFirebaseConfig);
+      } else {
+        initializeApp(serverFirebaseConfig);
       }
-      initializeApp(firebaseConfig);
     }
 }
 
